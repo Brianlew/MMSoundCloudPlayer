@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D30B2EDA1763995200FC997F /* cloud.png in Resources */ = {isa = PBXBuildFile; fileRef = D30B2ED91763995200FC997F /* cloud.png */; };
 		D338BE921762AF0100A10543 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D338BE911762AF0100A10543 /* UIKit.framework */; };
 		D338BE941762AF0100A10543 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D338BE931762AF0100A10543 /* Foundation.framework */; };
 		D338BE961762AF0100A10543 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D338BE951762AF0100A10543 /* CoreGraphics.framework */; };
@@ -22,6 +23,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		D30B2ED91763995200FC997F /* cloud.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cloud.png; sourceTree = "<group>"; };
 		D338BE8E1762AF0100A10543 /* MMSoundCloudPlayer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MMSoundCloudPlayer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D338BE911762AF0100A10543 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		D338BE931762AF0100A10543 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -56,6 +58,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D30B2ED81763994700FC997F /* images */ = {
+			isa = PBXGroup;
+			children = (
+				D30B2ED91763995200FC997F /* cloud.png */,
+			);
+			name = images;
+			sourceTree = "<group>";
+		};
 		D338BE851762AF0100A10543 = {
 			isa = PBXGroup;
 			children = (
@@ -100,6 +110,7 @@
 		D338BE981762AF0100A10543 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				D30B2ED81763994700FC997F /* images */,
 				D338BE991762AF0100A10543 /* MMSoundCloudPlayer-Info.plist */,
 				D338BE9A1762AF0100A10543 /* InfoPlist.strings */,
 				D338BE9D1762AF0100A10543 /* main.m */,
@@ -167,6 +178,7 @@
 				D338BEA61762AF0100A10543 /* Default@2x.png in Resources */,
 				D338BEA81762AF0100A10543 /* Default-568h@2x.png in Resources */,
 				D338BEAB1762AF0100A10543 /* MainStoryboard.storyboard in Resources */,
+				D30B2EDA1763995200FC997F /* cloud.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -302,6 +314,7 @@
 				D338BEB31762AF0100A10543 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

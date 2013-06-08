@@ -13,8 +13,11 @@
 {
     NSString *clientId;
     
+    NSOperationQueue *operationQueue;
+    
     AVPlayer *musicPlayer;
     NSArray *collection;
+    NSMutableArray *artworkArray;
 }
 
 -(void)playSound:(NSURL *)streamUrl;
@@ -30,16 +33,21 @@
 	// Do any additional setup after loading the view, typically from a nib.
     clientId = @"448b448032053786dd3c33df2f96b1ad";
     
+    operationQueue = [[NSOperationQueue alloc] init];
+    
     searchBar.delegate = self;
     tableView.delegate = self;
     tableView.dataSource = self;
     
+ //   searchBar.text = @"Disney";
 }
 
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
     NSLog(@"Search button was clicked: %@", self.searchBar.text);
     [self.searchBar resignFirstResponder];
+    [artworkArray removeAllObjects];
+    
     NSString *searchText = self.searchBar.text;
     NSString *encodedSearchText = [searchText stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSLog(@"Encoded Search Text: %@", encodedSearchText);
@@ -50,6 +58,8 @@
         
         NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
         collection = [responseDictionary objectForKey:@"collection"];
+        artworkArray = [[NSMutableArray alloc] initWithCapacity:collection.count];
+
         [tableView reloadData];
     } ];
 }
@@ -73,7 +83,49 @@
     cell.textLabel.text = collection[indexPath.row][@"title"];
     cell.detailTextLabel.text = collection[indexPath.row][@"user"][@"username"];
     
+    
+    if (indexPath.row < artworkArray.count) {
+        cell.imageView.image = artworkArray[indexPath.row];
+    }
+    else{
+        [artworkArray insertObject:[UIImage imageNamed:@"cloud.png"] atIndex:indexPath.row];
+
+        NSLog(@"IndexPath Row: %i", indexPath.row);
+        NSLog(@"artworkurl: %@", collection[indexPath.row][@"artwork_url"]);
+        
+        NSURL *artworkUrl;
+        if (collection[indexPath.row][@"artwork_url"] != [NSNull null]) {
+            artworkUrl = [NSURL URLWithString:collection[indexPath.row][@"artwork_url"]];
+            [self loadImageWithUrl:artworkUrl atIndexPath:indexPath];
+        }
+        else if (collection[indexPath.row][@"user"][@"avatar_url"] != [NSNull null])
+        {
+            artworkUrl = [NSURL URLWithString:collection[indexPath.row][@"user"][@"avatar_url"]];
+            [self loadImageWithUrl:artworkUrl atIndexPath:indexPath];
+        }
+    }
+    
     return cell;
+}
+
+-(void)loadImageWithUrl:(NSURL*)artworkUrl atIndexPath:(NSIndexPath*)indexPath
+{
+    NSLog(@"artworkUrl: %@", artworkUrl);
+    
+    NSBlockOperation *getArtworkOperation = [NSBlockOperation blockOperationWithBlock:^{
+        NSData *artworkData = [NSData dataWithContentsOfURL:artworkUrl];
+        UIImage *artwork = [UIImage imageWithData:artworkData];
+        
+        NSBlockOperation *showArtworkOperation = [NSBlockOperation blockOperationWithBlock:^{
+            [artworkArray replaceObjectAtIndex:indexPath.row withObject:artwork];
+            [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:NO];
+        }];
+        
+        [[NSOperationQueue mainQueue] addOperation:showArtworkOperation];
+    }];
+    
+    [operationQueue addOperation:getArtworkOperation];
+
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
