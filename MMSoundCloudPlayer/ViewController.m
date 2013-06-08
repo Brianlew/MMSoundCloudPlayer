@@ -59,6 +59,7 @@
         NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
         collection = [responseDictionary objectForKey:@"collection"];
         artworkArray = [[NSMutableArray alloc] initWithCapacity:collection.count];
+        [tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
 
         [tableView reloadData];
     } ];
@@ -83,15 +84,16 @@
     cell.textLabel.text = collection[indexPath.row][@"title"];
     cell.detailTextLabel.text = collection[indexPath.row][@"user"][@"username"];
     
-    
+    NSLog(@"IndexPath Row: %i", indexPath.row);
     if (indexPath.row < artworkArray.count) {
         cell.imageView.image = artworkArray[indexPath.row];
     }
     else{
         [artworkArray insertObject:[UIImage imageNamed:@"cloud.png"] atIndex:indexPath.row];
+        cell.imageView.image = artworkArray[indexPath.row];
 
-        NSLog(@"IndexPath Row: %i", indexPath.row);
-        NSLog(@"artworkurl: %@", collection[indexPath.row][@"artwork_url"]);
+     //   NSLog(@"IndexPath Row: %i", indexPath.row);
+      //  NSLog(@"artworkurl: %@", collection[indexPath.row][@"artwork_url"]);
         
         NSURL *artworkUrl;
         if (collection[indexPath.row][@"artwork_url"] != [NSNull null]) {
