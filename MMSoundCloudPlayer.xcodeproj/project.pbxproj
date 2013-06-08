@@ -1,0 +1,309 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		D338BE921762AF0100A10543 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D338BE911762AF0100A10543 /* UIKit.framework */; };
+		D338BE941762AF0100A10543 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D338BE931762AF0100A10543 /* Foundation.framework */; };
+		D338BE961762AF0100A10543 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D338BE951762AF0100A10543 /* CoreGraphics.framework */; };
+		D338BE9C1762AF0100A10543 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D338BE9A1762AF0100A10543 /* InfoPlist.strings */; };
+		D338BE9E1762AF0100A10543 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D338BE9D1762AF0100A10543 /* main.m */; };
+		D338BEA21762AF0100A10543 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D338BEA11762AF0100A10543 /* AppDelegate.m */; };
+		D338BEA41762AF0100A10543 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = D338BEA31762AF0100A10543 /* Default.png */; };
+		D338BEA61762AF0100A10543 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D338BEA51762AF0100A10543 /* Default@2x.png */; };
+		D338BEA81762AF0100A10543 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D338BEA71762AF0100A10543 /* Default-568h@2x.png */; };
+		D338BEAB1762AF0100A10543 /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D338BEA91762AF0100A10543 /* MainStoryboard.storyboard */; };
+		D338BEAE1762AF0100A10543 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D338BEAD1762AF0100A10543 /* ViewController.m */; };
+		D338BEB51762AF1D00A10543 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D338BEB41762AF1D00A10543 /* AVFoundation.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		D338BE8E1762AF0100A10543 /* MMSoundCloudPlayer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MMSoundCloudPlayer.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D338BE911762AF0100A10543 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		D338BE931762AF0100A10543 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		D338BE951762AF0100A10543 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		D338BE991762AF0100A10543 /* MMSoundCloudPlayer-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "MMSoundCloudPlayer-Info.plist"; sourceTree = "<group>"; };
+		D338BE9B1762AF0100A10543 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		D338BE9D1762AF0100A10543 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		D338BE9F1762AF0100A10543 /* MMSoundCloudPlayer-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MMSoundCloudPlayer-Prefix.pch"; sourceTree = "<group>"; };
+		D338BEA01762AF0100A10543 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		D338BEA11762AF0100A10543 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		D338BEA31762AF0100A10543 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
+		D338BEA51762AF0100A10543 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
+		D338BEA71762AF0100A10543 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		D338BEAA1762AF0100A10543 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
+		D338BEAC1762AF0100A10543 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		D338BEAD1762AF0100A10543 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		D338BEB41762AF1D00A10543 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		D338BE8B1762AF0100A10543 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D338BEB51762AF1D00A10543 /* AVFoundation.framework in Frameworks */,
+				D338BE921762AF0100A10543 /* UIKit.framework in Frameworks */,
+				D338BE941762AF0100A10543 /* Foundation.framework in Frameworks */,
+				D338BE961762AF0100A10543 /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		D338BE851762AF0100A10543 = {
+			isa = PBXGroup;
+			children = (
+				D338BE971762AF0100A10543 /* MMSoundCloudPlayer */,
+				D338BE901762AF0100A10543 /* Frameworks */,
+				D338BE8F1762AF0100A10543 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		D338BE8F1762AF0100A10543 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D338BE8E1762AF0100A10543 /* MMSoundCloudPlayer.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D338BE901762AF0100A10543 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D338BEB41762AF1D00A10543 /* AVFoundation.framework */,
+				D338BE911762AF0100A10543 /* UIKit.framework */,
+				D338BE931762AF0100A10543 /* Foundation.framework */,
+				D338BE951762AF0100A10543 /* CoreGraphics.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		D338BE971762AF0100A10543 /* MMSoundCloudPlayer */ = {
+			isa = PBXGroup;
+			children = (
+				D338BEA01762AF0100A10543 /* AppDelegate.h */,
+				D338BEA11762AF0100A10543 /* AppDelegate.m */,
+				D338BEA91762AF0100A10543 /* MainStoryboard.storyboard */,
+				D338BEAC1762AF0100A10543 /* ViewController.h */,
+				D338BEAD1762AF0100A10543 /* ViewController.m */,
+				D338BE981762AF0100A10543 /* Supporting Files */,
+			);
+			path = MMSoundCloudPlayer;
+			sourceTree = "<group>";
+		};
+		D338BE981762AF0100A10543 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				D338BE991762AF0100A10543 /* MMSoundCloudPlayer-Info.plist */,
+				D338BE9A1762AF0100A10543 /* InfoPlist.strings */,
+				D338BE9D1762AF0100A10543 /* main.m */,
+				D338BE9F1762AF0100A10543 /* MMSoundCloudPlayer-Prefix.pch */,
+				D338BEA31762AF0100A10543 /* Default.png */,
+				D338BEA51762AF0100A10543 /* Default@2x.png */,
+				D338BEA71762AF0100A10543 /* Default-568h@2x.png */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		D338BE8D1762AF0100A10543 /* MMSoundCloudPlayer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D338BEB11762AF0100A10543 /* Build configuration list for PBXNativeTarget "MMSoundCloudPlayer" */;
+			buildPhases = (
+				D338BE8A1762AF0100A10543 /* Sources */,
+				D338BE8B1762AF0100A10543 /* Frameworks */,
+				D338BE8C1762AF0100A10543 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MMSoundCloudPlayer;
+			productName = MMSoundCloudPlayer;
+			productReference = D338BE8E1762AF0100A10543 /* MMSoundCloudPlayer.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D338BE861762AF0100A10543 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0460;
+				ORGANIZATIONNAME = "Brian Lewis";
+			};
+			buildConfigurationList = D338BE891762AF0100A10543 /* Build configuration list for PBXProject "MMSoundCloudPlayer" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = D338BE851762AF0100A10543;
+			productRefGroup = D338BE8F1762AF0100A10543 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				D338BE8D1762AF0100A10543 /* MMSoundCloudPlayer */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		D338BE8C1762AF0100A10543 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D338BE9C1762AF0100A10543 /* InfoPlist.strings in Resources */,
+				D338BEA41762AF0100A10543 /* Default.png in Resources */,
+				D338BEA61762AF0100A10543 /* Default@2x.png in Resources */,
+				D338BEA81762AF0100A10543 /* Default-568h@2x.png in Resources */,
+				D338BEAB1762AF0100A10543 /* MainStoryboard.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		D338BE8A1762AF0100A10543 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D338BE9E1762AF0100A10543 /* main.m in Sources */,
+				D338BEA21762AF0100A10543 /* AppDelegate.m in Sources */,
+				D338BEAE1762AF0100A10543 /* ViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		D338BE9A1762AF0100A10543 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D338BE9B1762AF0100A10543 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		D338BEA91762AF0100A10543 /* MainStoryboard.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D338BEAA1762AF0100A10543 /* en */,
+			);
+			name = MainStoryboard.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		D338BEAF1762AF0100A10543 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		D338BEB01762AF0100A10543 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		D338BEB21762AF0100A10543 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "MMSoundCloudPlayer/MMSoundCloudPlayer-Prefix.pch";
+				INFOPLIST_FILE = "MMSoundCloudPlayer/MMSoundCloudPlayer-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		D338BEB31762AF0100A10543 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "MMSoundCloudPlayer/MMSoundCloudPlayer-Prefix.pch";
+				INFOPLIST_FILE = "MMSoundCloudPlayer/MMSoundCloudPlayer-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		D338BE891762AF0100A10543 /* Build configuration list for PBXProject "MMSoundCloudPlayer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D338BEAF1762AF0100A10543 /* Debug */,
+				D338BEB01762AF0100A10543 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D338BEB11762AF0100A10543 /* Build configuration list for PBXNativeTarget "MMSoundCloudPlayer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D338BEB21762AF0100A10543 /* Debug */,
+				D338BEB31762AF0100A10543 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = D338BE861762AF0100A10543 /* Project object */;
+}
