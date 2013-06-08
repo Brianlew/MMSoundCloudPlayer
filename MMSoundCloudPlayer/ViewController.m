@@ -8,6 +8,7 @@
 
 #import "ViewController.h"
 #import <AVFoundation/AVFoundation.h>
+#import "PlaySoundViewController.h"
 
 @interface ViewController ()
 {
@@ -18,8 +19,10 @@
     AVPlayer *musicPlayer;
     NSArray *collection;
     NSMutableArray *artworkArray;
+    
 }
 
+-(void)loadArtworkWithUrl:(NSURL*)artworkUrl atIndexPath:(NSIndexPath*)indexPath;
 -(void)playSound:(NSURL *)streamUrl;
 @end
 
@@ -98,19 +101,19 @@
         NSURL *artworkUrl;
         if (collection[indexPath.row][@"artwork_url"] != [NSNull null]) {
             artworkUrl = [NSURL URLWithString:collection[indexPath.row][@"artwork_url"]];
-            [self loadImageWithUrl:artworkUrl atIndexPath:indexPath];
+            [self loadArtworkWithUrl:artworkUrl atIndexPath:indexPath];
         }
         else if (collection[indexPath.row][@"user"][@"avatar_url"] != [NSNull null])
         {
             artworkUrl = [NSURL URLWithString:collection[indexPath.row][@"user"][@"avatar_url"]];
-            [self loadImageWithUrl:artworkUrl atIndexPath:indexPath];
+            [self loadArtworkWithUrl:artworkUrl atIndexPath:indexPath];
         }
     }
     
     return cell;
 }
 
--(void)loadImageWithUrl:(NSURL*)artworkUrl atIndexPath:(NSIndexPath*)indexPath
+-(void)loadArtworkWithUrl:(NSURL*)artworkUrl atIndexPath:(NSIndexPath*)indexPath
 {
     NSLog(@"artworkUrl: %@", artworkUrl);
     
@@ -132,10 +135,22 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    //[self playSound:streamUrl];
+
+    [self performSegueWithIdentifier:@"playSoundSegue" sender:self];
+}
+
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    NSIndexPath *indexPath = [tableView indexPathForSelectedRow];
     NSString *streamUrlString = [NSString stringWithFormat:@"%@?client_id=%@", collection[indexPath.row][@"stream_url"], clientId];
     NSLog(@"streamUrlString: %@", streamUrlString);
     NSURL *streamUrl = [NSURL URLWithString:streamUrlString];
-    [self playSound:streamUrl];
+    
+    NSInteger durationInMilliseconds = [collection[indexPath.row][@"duration"] integerValue];
+
+    ((PlaySoundViewController*)segue.destinationViewController).streamUrl = streamUrl;
+    ((PlaySoundViewController*)segue.destinationViewController).durationInMilliseconds = durationInMilliseconds;
 }
 
 -(void)playSound:(NSURL *)streamUrl

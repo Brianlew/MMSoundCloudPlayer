@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		D30B2EDA1763995200FC997F /* cloud.png in Resources */ = {isa = PBXBuildFile; fileRef = D30B2ED91763995200FC997F /* cloud.png */; };
+		D30B2EDD1763B29E00FC997F /* PlaySoundViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D30B2EDC1763B29E00FC997F /* PlaySoundViewController.m */; };
+		D30B2EDF1763B9CB00FC997F /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D30B2EDE1763B9CB00FC997F /* CoreMedia.framework */; };
 		D338BE921762AF0100A10543 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D338BE911762AF0100A10543 /* UIKit.framework */; };
 		D338BE941762AF0100A10543 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D338BE931762AF0100A10543 /* Foundation.framework */; };
 		D338BE961762AF0100A10543 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D338BE951762AF0100A10543 /* CoreGraphics.framework */; };
@@ -24,6 +26,9 @@
 
 /* Begin PBXFileReference section */
 		D30B2ED91763995200FC997F /* cloud.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cloud.png; sourceTree = "<group>"; };
+		D30B2EDB1763B29E00FC997F /* PlaySoundViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaySoundViewController.h; sourceTree = "<group>"; };
+		D30B2EDC1763B29E00FC997F /* PlaySoundViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaySoundViewController.m; sourceTree = "<group>"; };
+		D30B2EDE1763B9CB00FC997F /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		D338BE8E1762AF0100A10543 /* MMSoundCloudPlayer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MMSoundCloudPlayer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D338BE911762AF0100A10543 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		D338BE931762AF0100A10543 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -48,6 +53,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D30B2EDF1763B9CB00FC997F /* CoreMedia.framework in Frameworks */,
 				D338BEB51762AF1D00A10543 /* AVFoundation.framework in Frameworks */,
 				D338BE921762AF0100A10543 /* UIKit.framework in Frameworks */,
 				D338BE941762AF0100A10543 /* Foundation.framework in Frameworks */,
@@ -86,6 +92,7 @@
 		D338BE901762AF0100A10543 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D30B2EDE1763B9CB00FC997F /* CoreMedia.framework */,
 				D338BEB41762AF1D00A10543 /* AVFoundation.framework */,
 				D338BE911762AF0100A10543 /* UIKit.framework */,
 				D338BE931762AF0100A10543 /* Foundation.framework */,
@@ -100,6 +107,8 @@
 				D338BEA01762AF0100A10543 /* AppDelegate.h */,
 				D338BEA11762AF0100A10543 /* AppDelegate.m */,
 				D338BEA91762AF0100A10543 /* MainStoryboard.storyboard */,
+				D30B2EDB1763B29E00FC997F /* PlaySoundViewController.h */,
+				D30B2EDC1763B29E00FC997F /* PlaySoundViewController.m */,
 				D338BEAC1762AF0100A10543 /* ViewController.h */,
 				D338BEAD1762AF0100A10543 /* ViewController.m */,
 				D338BE981762AF0100A10543 /* Supporting Files */,
@@ -192,6 +201,7 @@
 				D338BE9E1762AF0100A10543 /* main.m in Sources */,
 				D338BEA21762AF0100A10543 /* AppDelegate.m in Sources */,
 				D338BEAE1762AF0100A10543 /* ViewController.m in Sources */,
+				D30B2EDD1763B29E00FC997F /* PlaySoundViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
