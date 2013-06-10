@@ -136,6 +136,7 @@
                     <connections>
                         <outlet property="artworkImageView" destination="JOJ-Ae-Exg" id="cO7-1j-Vqf"/>
                         <outlet property="waveformProgressBar" destination="gZl-EW-8x5" id="q1B-B5-cED"/>
+                        <outlet property="waveformShapeView" destination="VI1-uA-szq" id="qWa-ou-NNv"/>
                         <outlet property="waveformView" destination="jao-nL-VOk" id="DDQ-05-cii"/>
                     </connections>
                 </viewController>
@@ -147,28 +148,6 @@
     <resources>
         <image name="sampleWaveForm.png" width="1800" height="280"/>
     </resources>
-    <classes>
-        <class className="PlaySoundViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/PlaySoundViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="backToSearchResults:"/>
-                <relationship kind="action" name="pauseSound:"/>
-                <relationship kind="action" name="playSound:"/>
-                <relationship kind="action" name="seek:"/>
-                <relationship kind="outlet" name="artworkImageView" candidateClass="UIImageView"/>
-                <relationship kind="outlet" name="soundCurrentPositionOutlet" candidateClass="UISlider"/>
-                <relationship kind="outlet" name="waveformProgressBar" candidateClass="UIView"/>
-                <relationship kind="outlet" name="waveformView" candidateClass="UIView"/>
-            </relationships>
-        </class>
-        <class className="ViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/ViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="searchBar" candidateClass="UISearchBar"/>
-                <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
-            </relationships>
-        </class>
-    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

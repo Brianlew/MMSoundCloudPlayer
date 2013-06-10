@@ -20,10 +20,10 @@
 @property (weak, nonatomic) IBOutlet UIImageView *artworkImageView;
 @property (weak, nonatomic) IBOutlet UIView *waveformProgressBar;
 @property (weak, nonatomic) IBOutlet UIView *waveformView;
+@property (weak, nonatomic) IBOutlet UIImageView *waveformShapeView;
 
-@property (weak, nonatomic) IBOutlet UISlider *soundCurrentPositionOutlet;
+
 - (IBAction)playSound:(id)sender;
 - (IBAction)pauseSound:(id)sender;
-- (IBAction)seek:(id)sender;
 - (IBAction)backToSearchResults:(id)sender;
 @end

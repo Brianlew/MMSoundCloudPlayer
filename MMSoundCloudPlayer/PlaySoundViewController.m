@@ -12,17 +12,19 @@
 
 @interface PlaySoundViewController ()
 {
-    NSTimer *timerToUpdateSlider;
+    NSTimer *timerToUpdateProgressBar;
+    CGFloat timerInterval;
 }
 
 -(void)updateSoundProgressBar;
 -(void)setUpGestureRecognizer;
+-(void)seek;
 
 @end
 
 @implementation PlaySoundViewController
 
-@synthesize musicPlayer, streamUrl, soundCurrentPositionOutlet, durationInMilliseconds, artworkImageView, artworkImage, waveformUrl, waveformProgressBar, waveformView;
+@synthesize musicPlayer, streamUrl, durationInMilliseconds, artworkImageView, artworkImage, waveformUrl, waveformProgressBar, waveformView, waveformShapeView;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -51,6 +53,10 @@
     
     artworkImageView.image = artworkImage;
     NSLog(@"Duration: %i", durationInMilliseconds);
+    timerInterval = .2;
+    
+    NSData *waveFormImageData = [NSData dataWithContentsOfURL:waveformUrl];
+    waveformShapeView.image = [UIImage imageWithData:waveFormImageData];
 }
 
 - (void)didReceiveMemoryWarning
@@ -61,8 +67,8 @@
 
 -(void)setUpGestureRecognizer
 {
-    UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(seek:)];
-    UITapGestureRecognizer *seekGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(seek:)];
+    UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(seek)];
+    UITapGestureRecognizer *seekGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(seek)];
     seekGesture.delegate = self;
    // seekGesture.maximumNumberOfTouches = 1;
    // seekGesture.minimumNumberOfTouches = 1;
@@ -73,16 +79,16 @@
 }
 
 - (IBAction)playSound:(id)sender {
-    timerToUpdateSlider = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(updateSoundProgressBar) userInfo:nil repeats:YES];
+    timerToUpdateProgressBar = [NSTimer scheduledTimerWithTimeInterval:timerInterval target:self selector:@selector(updateSoundProgressBar) userInfo:nil repeats:YES];
     [musicPlayer play];
 }
 
 - (IBAction)pauseSound:(id)sender {
     [musicPlayer pause];
-    [timerToUpdateSlider invalidate];
+    [timerToUpdateProgressBar invalidate];
 }
 
-- (IBAction)seek:(id)sender {
+- (void)seek {
     
     CGPoint seekPosition = [waveformView.gestureRecognizers[0] locationInView:waveformView];
     
@@ -96,22 +102,34 @@
 
     NSLog(@"Seek Position x: %f", seekPosition.x);
     
-    waveformProgressBar.frame = CGRectMake(waveformProgressBar.frame.origin.x, waveformProgressBar.frame.origin.y, seekPosition.x, waveformProgressBar.frame.size.height);
-    
+    if (seekPosition.x >= 0 && seekPosition.x <= waveformView.frame.size.width) {
+            waveformProgressBar.frame = CGRectMake(waveformProgressBar.frame.origin.x, waveformProgressBar.frame.origin.y, seekPosition.x, waveformProgressBar.frame.size.height);
+    }
+
     NSLog(@"progress width: %f", waveformProgressBar.frame.size.width);
 }
 
 - (IBAction)backToSearchResults:(id)sender {
     
-    [timerToUpdateSlider invalidate];
+    [timerToUpdateProgressBar invalidate];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 -(void)updateSoundProgressBar
 {
-    NSLog(@"current position: %f", soundCurrentPositionOutlet.value);
+    CGFloat progressWidth = waveformProgressBar.frame.size.width + 1000.00*timerInterval*waveformView.frame.size.width/durationInMilliseconds;
     
-    waveformProgressBar.frame = CGRectMake(waveformView.frame.origin.x, waveformView.frame.origin.y, waveformProgressBar.frame.size.width + 1000.00*280/durationInMilliseconds, waveformView.frame.size.height);
+    if(progressWidth < 0 )
+    {
+        progressWidth = 0;
+    }
+    if (progressWidth > waveformView.frame.size.width) {
+        progressWidth = waveformView.frame.size.width;
+        [timerToUpdateProgressBar invalidate];
+    }
     
+    [UIView animateWithDuration:timerInterval animations:^{
+        waveformProgressBar.frame = CGRectMake(waveformView.frame.origin.x, waveformView.frame.origin.y, progressWidth, waveformView.frame.size.height);
+    }];
 }
 @end
