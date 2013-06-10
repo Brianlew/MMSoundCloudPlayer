@@ -7,15 +7,22 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <AVFoundation/AVFoundation.h>
 
 @interface PlaySoundViewController : UIViewController
 
+@property (strong, nonatomic) AVPlayer *musicPlayer;
+
 @property NSInteger durationInMilliseconds;
 @property (strong, nonatomic) NSURL *streamUrl;
-
+@property (strong, nonatomic) NSURL *waveformUrl;
+@property (strong, nonatomic) UIImage *artworkImage;
+@property (weak, nonatomic) IBOutlet UIImageView *artworkImageView;
+@property (weak, nonatomic) IBOutlet UIView *waveformProgressView;
 
 @property (weak, nonatomic) IBOutlet UISlider *soundCurrentPositionOutlet;
 - (IBAction)playSound:(id)sender;
 - (IBAction)pauseSound:(id)sender;
 - (IBAction)seek:(id)sender;
+- (IBAction)backToSearchResults:(id)sender;
 @end

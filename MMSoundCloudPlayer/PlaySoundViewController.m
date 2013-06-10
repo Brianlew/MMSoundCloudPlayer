@@ -12,7 +12,6 @@
 
 @interface PlaySoundViewController ()
 {
-    AVPlayer *musicPlayer;
     NSTimer *timerToUpdateSlider;
 }
 
@@ -21,7 +20,7 @@
 
 @implementation PlaySoundViewController
 
-@synthesize streamUrl, soundCurrentPositionOutlet, durationInMilliseconds;
+@synthesize musicPlayer, streamUrl, soundCurrentPositionOutlet, durationInMilliseconds, artworkImageView, artworkImage, waveformUrl, waveformProgressView;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -37,13 +36,16 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
-    NSError *error;
-    musicPlayer = [AVPlayer playerWithURL:streamUrl];
-    
-    if (musicPlayer==nil) {
-        NSLog(@"Error: %@", error.description);
+ /*   if (musicPlayer != nil) {
+        [musicPlayer replaceCurrentItemWithPlayerItem:[AVPlayer playerWithURL:streamUrl]];
     }
+    else
+    {
+        musicPlayer = [AVPlayer playerWithURL:streamUrl];
+
+    }*/
     
+    artworkImageView.image = artworkImage;
     NSLog(@"Duration: %i", durationInMilliseconds);
 }
 
@@ -67,11 +69,21 @@
     CGFloat chosenPosition = soundCurrentPositionOutlet.value;
     NSLog(@"Chosen Position: %f", soundCurrentPositionOutlet.value);
     [musicPlayer seekToTime:CMTimeMake(durationInMilliseconds*chosenPosition, 1000)];
+    
+    waveformProgressView.frame = CGRectMake(waveformProgressView.frame.origin.x, waveformProgressView.frame.origin.y, chosenPosition*280, waveformProgressView.frame.size.height);
+}
+
+- (IBAction)backToSearchResults:(id)sender {
+    
+    [timerToUpdateSlider invalidate];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 -(void)updateSoundProgressSlider
 {
     NSLog(@"current position: %f", soundCurrentPositionOutlet.value);
     [soundCurrentPositionOutlet setValue:(soundCurrentPositionOutlet.value + 1000.00/(durationInMilliseconds)) animated:YES];
+    waveformProgressView.frame = CGRectMake(waveformProgressView.frame.origin.x, waveformProgressView.frame.origin.y, waveformProgressView.frame.size.width + 1000.00*280/durationInMilliseconds, waveformProgressView.frame.size.height);
+    
 }
 @end

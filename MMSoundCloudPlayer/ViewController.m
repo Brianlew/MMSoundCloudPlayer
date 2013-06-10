@@ -9,6 +9,7 @@
 #import "ViewController.h"
 #import <AVFoundation/AVFoundation.h>
 #import "PlaySoundViewController.h"
+#import <AVFoundation/AVFoundation.h>
 
 @interface ViewController ()
 {
@@ -36,13 +37,14 @@
 	// Do any additional setup after loading the view, typically from a nib.
     clientId = @"448b448032053786dd3c33df2f96b1ad";
     
+    musicPlayer = [[AVPlayer alloc] init];
+    
     operationQueue = [[NSOperationQueue alloc] init];
     
     searchBar.delegate = self;
     tableView.delegate = self;
     tableView.dataSource = self;
     
- //   searchBar.text = @"Disney";
 }
 
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
@@ -148,9 +150,17 @@
     NSURL *streamUrl = [NSURL URLWithString:streamUrlString];
     
     NSInteger durationInMilliseconds = [collection[indexPath.row][@"duration"] integerValue];
+    NSURL *waveformUrl = [NSURL URLWithString:collection[indexPath.row][@"waveform_url"]];
+    
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    UIImage *artworkImage = cell.imageView.image;
 
+    [musicPlayer pause];
+    ((PlaySoundViewController*)segue.destinationViewController).musicPlayer = [musicPlayer initWithURL:streamUrl];
     ((PlaySoundViewController*)segue.destinationViewController).streamUrl = streamUrl;
     ((PlaySoundViewController*)segue.destinationViewController).durationInMilliseconds = durationInMilliseconds;
+    ((PlaySoundViewController*)segue.destinationViewController).waveformUrl = waveformUrl;
+    ((PlaySoundViewController*)segue.destinationViewController).artworkImage = artworkImage;
 }
 
 -(void)playSound:(NSURL *)streamUrl
