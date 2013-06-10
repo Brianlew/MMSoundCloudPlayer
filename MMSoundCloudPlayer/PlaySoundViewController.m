@@ -15,12 +15,14 @@
     NSTimer *timerToUpdateSlider;
 }
 
--(void)updateSoundProgressSlider;
+-(void)updateSoundProgressBar;
+-(void)setUpGestureRecognizer;
+
 @end
 
 @implementation PlaySoundViewController
 
-@synthesize musicPlayer, streamUrl, soundCurrentPositionOutlet, durationInMilliseconds, artworkImageView, artworkImage, waveformUrl, waveformProgressView;
+@synthesize musicPlayer, streamUrl, soundCurrentPositionOutlet, durationInMilliseconds, artworkImageView, artworkImage, waveformUrl, waveformProgressBar, waveformView;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -45,6 +47,8 @@
 
     }*/
     
+    [self setUpGestureRecognizer];
+    
     artworkImageView.image = artworkImage;
     NSLog(@"Duration: %i", durationInMilliseconds);
 }
@@ -55,8 +59,21 @@
     // Dispose of any resources that can be recreated.
 }
 
+-(void)setUpGestureRecognizer
+{
+    UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(seek:)];
+    UITapGestureRecognizer *seekGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(seek:)];
+    seekGesture.delegate = self;
+   // seekGesture.maximumNumberOfTouches = 1;
+   // seekGesture.minimumNumberOfTouches = 1;
+    [waveformView addGestureRecognizer:seekGesture];
+    [waveformView addGestureRecognizer:panGesture];
+
+    
+}
+
 - (IBAction)playSound:(id)sender {
-    timerToUpdateSlider = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(updateSoundProgressSlider) userInfo:nil repeats:YES];
+    timerToUpdateSlider = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(updateSoundProgressBar) userInfo:nil repeats:YES];
     [musicPlayer play];
 }
 
@@ -66,11 +83,22 @@
 }
 
 - (IBAction)seek:(id)sender {
-    CGFloat chosenPosition = soundCurrentPositionOutlet.value;
-    NSLog(@"Chosen Position: %f", soundCurrentPositionOutlet.value);
-    [musicPlayer seekToTime:CMTimeMake(durationInMilliseconds*chosenPosition, 1000)];
     
-    waveformProgressView.frame = CGRectMake(waveformProgressView.frame.origin.x, waveformProgressView.frame.origin.y, chosenPosition*280, waveformProgressView.frame.size.height);
+    CGPoint seekPosition = [waveformView.gestureRecognizers[0] locationInView:waveformView];
+    
+    UIPanGestureRecognizer *panGesture = waveformView.gestureRecognizers[1];
+    
+    if (panGesture.state == UIGestureRecognizerStateBegan || panGesture.state == UIGestureRecognizerStateChanged || panGesture.state == UIGestureRecognizerStateEnded) {
+        seekPosition = [panGesture locationInView:waveformView];
+    }
+    
+    [musicPlayer seekToTime:CMTimeMake(durationInMilliseconds*seekPosition.x/waveformView.frame.size.width, 1000)];
+
+    NSLog(@"Seek Position x: %f", seekPosition.x);
+    
+    waveformProgressBar.frame = CGRectMake(waveformProgressBar.frame.origin.x, waveformProgressBar.frame.origin.y, seekPosition.x, waveformProgressBar.frame.size.height);
+    
+    NSLog(@"progress width: %f", waveformProgressBar.frame.size.width);
 }
 
 - (IBAction)backToSearchResults:(id)sender {
@@ -79,11 +107,11 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
--(void)updateSoundProgressSlider
+-(void)updateSoundProgressBar
 {
     NSLog(@"current position: %f", soundCurrentPositionOutlet.value);
-    [soundCurrentPositionOutlet setValue:(soundCurrentPositionOutlet.value + 1000.00/(durationInMilliseconds)) animated:YES];
-    waveformProgressView.frame = CGRectMake(waveformProgressView.frame.origin.x, waveformProgressView.frame.origin.y, waveformProgressView.frame.size.width + 1000.00*280/durationInMilliseconds, waveformProgressView.frame.size.height);
+    
+    waveformProgressBar.frame = CGRectMake(waveformView.frame.origin.x, waveformView.frame.origin.y, waveformProgressBar.frame.size.width + 1000.00*280/durationInMilliseconds, waveformView.frame.size.height);
     
 }
 @end

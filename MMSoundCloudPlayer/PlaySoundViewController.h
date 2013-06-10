@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
 
-@interface PlaySoundViewController : UIViewController
+@interface PlaySoundViewController : UIViewController <UIGestureRecognizerDelegate>
 
 @property (strong, nonatomic) AVPlayer *musicPlayer;
 
@@ -18,7 +18,8 @@
 @property (strong, nonatomic) NSURL *waveformUrl;
 @property (strong, nonatomic) UIImage *artworkImage;
 @property (weak, nonatomic) IBOutlet UIImageView *artworkImageView;
-@property (weak, nonatomic) IBOutlet UIView *waveformProgressView;
+@property (weak, nonatomic) IBOutlet UIView *waveformProgressBar;
+@property (weak, nonatomic) IBOutlet UIView *waveformView;
 
 @property (weak, nonatomic) IBOutlet UISlider *soundCurrentPositionOutlet;
 - (IBAction)playSound:(id)sender;
