@@ -10,21 +10,25 @@
 #import <AVFoundation/AVFoundation.h>
 #import "PlaySoundViewController.h"
 #import <AVFoundation/AVFoundation.h>
+#import "Constants.h"
 
 @interface ViewController ()
 {
     NSString *clientId;
-    
     NSOperationQueue *operationQueue;
+    PlaySoundViewController *playSoundViewController;
     
-    AVPlayer *musicPlayer;
+   // AVPlayer *musicPlayer;
     NSArray *collection;
     NSMutableArray *artworkArray;
+    
+    UIImage *nextArtworkImage;
+    
     
 }
 
 -(void)loadArtworkWithUrl:(NSURL*)artworkUrl atIndexPath:(NSIndexPath*)indexPath;
--(void)playSound:(NSURL *)streamUrl;
+//-(void)playSound:(NSURL *)streamUrl;
 @end
 
 @implementation ViewController
@@ -35,10 +39,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
-    clientId = @"448b448032053786dd3c33df2f96b1ad";
-    
-    musicPlayer = [[AVPlayer alloc] init];
-    
+        
     operationQueue = [[NSOperationQueue alloc] init];
     
     searchBar.delegate = self;
@@ -56,7 +57,7 @@
     NSString *searchText = self.searchBar.text;
     NSString *encodedSearchText = [searchText stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSLog(@"Encoded Search Text: %@", encodedSearchText);
-    NSString *urlString = [NSString stringWithFormat:@"https://api.soundcloud.com/search/sounds.json?client_id=%@&q=%@", clientId, encodedSearchText];
+    NSString *urlString = [NSString stringWithFormat:@"https://api.soundcloud.com/search/sounds.json?client_id=%@&q=%@", sClientId, encodedSearchText];
     NSURL *url = [NSURL URLWithString:urlString];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
@@ -139,10 +140,26 @@
 {
     //[self playSound:streamUrl];
 
-    [self performSegueWithIdentifier:@"playSoundSegue" sender:self];
+    //[self performSegueWithIdentifier:@"playSoundSegue" sender:self];
+    
+    if (playSoundViewController ==  nil) {        
+        UIStoryboard *storyboard = self.storyboard;
+        playSoundViewController = [storyboard instantiateViewControllerWithIdentifier:@"playSoundVC"];
+    }
+    
+    playSoundViewController.playlistArray = collection;
+    playSoundViewController.currentIndex = indexPath.row;
+ 
+    
+    [self presentViewController: playSoundViewController animated:YES completion:nil];
 }
 
--(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+-(void)retainPlaySoundViewController
+{
+    playSoundViewController = (PlaySoundViewController*)self.presentedViewController;
+}
+
+/*-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     NSIndexPath *indexPath = [tableView indexPathForSelectedRow];
     NSString *streamUrlString = [NSString stringWithFormat:@"%@?client_id=%@", collection[indexPath.row][@"stream_url"], clientId];
@@ -176,7 +193,7 @@
         [musicPlayer play];
     }
 
-}
+}*/
 
 - (void)didReceiveMemoryWarning
 {

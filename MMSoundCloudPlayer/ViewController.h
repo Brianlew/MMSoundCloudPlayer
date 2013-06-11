@@ -7,9 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "RetainPlaySoundViewControllerProtocol.h"
 
-@interface ViewController : UIViewController <UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate>
+@interface ViewController : UIViewController <UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate, RetainPlaySoundViewControllerProtocol>
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+
+@property (strong, nonatomic) UIImage *currentArtworkImage;
+
 
 @end
