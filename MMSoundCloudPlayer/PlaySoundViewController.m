@@ -60,7 +60,24 @@
     timerInterval = .2;
     
     [self setUpGestureRecognizer];
-    
+        
+}
+
+-(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    [timerToUpdateProgressBar invalidate];
+
+    NSLog(@"MusicPlayer Rate: %f", musicPlayer.rate);
+    if ([keyPath isEqualToString:@"rate"]) {
+        if (musicPlayer.rate) {
+            [self updateSoundProgressBar];
+             timerToUpdateProgressBar = [NSTimer scheduledTimerWithTimeInterval:timerInterval target:self selector:@selector(updateSoundProgressBar) userInfo:nil repeats:YES];
+            NSLog(@"Playing");
+        }
+        else {
+            NSLog(@"Paused");
+        }
+    }
 }
 
 -(void)viewDidAppear:(BOOL)animated
@@ -76,10 +93,10 @@
         [self loadTrack:nextTrack forIndex:currentIndex+1];
     }
 
-    [self displayNewTrack];
+    [self displayCurrentTrack];
 }
 
--(void)displayNewTrack
+-(void)displayCurrentTrack
 {
     waveformProgressBar.frame = CGRectMake(waveformProgressBar.frame.origin.x, waveformProgressBar.frame.origin.y, 0, waveformProgressBar.frame.size.height);
     
@@ -93,6 +110,7 @@
     {
         artworkImageView.image = currentTrack.artWork;
     }
+    
     if (currentTrack.waveformImage == nil) {
         waveformShapeView.image = [UIImage imageNamed:@"sampleWaveForm.png"];
     }
@@ -101,9 +119,11 @@
         waveformShapeView.image = currentTrack.waveformImage;
     }
     
+    [musicPlayer removeObserver:self forKeyPath:@"rate"];
     musicPlayer = [AVPlayer playerWithURL:currentTrack.streamUrl];
+    [musicPlayer addObserver:self forKeyPath:@"rate" options:0 context:nil];
     
-    [self playSound:self];
+    [musicPlayer play];
 }
 
 -(void)loadTrack:(Track*)track forIndex:(NSInteger)index
@@ -149,22 +169,19 @@
 }
 
 - (IBAction)playSound:(id)sender {
-    [self pauseSound:self];
-    timerToUpdateProgressBar = [NSTimer scheduledTimerWithTimeInterval:timerInterval target:self selector:@selector(updateSoundProgressBar) userInfo:nil repeats:YES];
     [musicPlayer play];
 }
 
 - (IBAction)pauseSound:(id)sender {
     [musicPlayer pause];
-    [timerToUpdateProgressBar invalidate];
 }
 
 - (IBAction)skipToPreviousSong:(id)sender {
-    [self pauseSound:self];
+    [musicPlayer pause];
     currentIndex--;
     nextTrack = [Track createTrackFromTrack:currentTrack];
     currentTrack = [Track createTrackFromTrack:previousTrack];
-    [self displayNewTrack];
+    [self displayCurrentTrack];
     
     if (currentIndex <= 0) {
         [self loadTrack:previousTrack forIndex:playlistArray.count-1];
@@ -180,11 +197,11 @@
 }
 
 - (IBAction)skipToNextSong:(id)sender {
-    [self pauseSound:self];
+    [musicPlayer pause];
     currentIndex++;
     previousTrack = [Track createTrackFromTrack:currentTrack];
     currentTrack = [Track createTrackFromTrack:nextTrack];
-    [self displayNewTrack];
+    [self displayCurrentTrack];
     
     if (currentIndex >= playlistArray.count - 1) {
         [self loadTrack:nextTrack forIndex:0];
@@ -213,11 +230,11 @@
     
     if (seekPosition.x < 0) {
         seekPosition.x = 0;
-        [self pauseSound:self];
+        [musicPlayer pause];
     }
     if (seekPosition.x > waveformView.frame.size.width) {
         seekPosition.x = waveformView.frame.size.width;
-        [self pauseSound:self];
+        [musicPlayer pause];
     }
     
     [musicPlayer seekToTime:CMTimeMake(currentTrack.durationInMilliseconds*seekPosition.x/waveformView.frame.size.width, 1000)];
@@ -230,16 +247,19 @@
 
 - (IBAction)backToSearchResults:(id)sender {
     
-    [timerToUpdateProgressBar invalidate];
     [self.delegate retainPlaySoundViewController];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 -(void)updateSoundProgressBar
 {
-    CGFloat progressWidth = waveformProgressBar.frame.size.width + 1000.00*timerInterval*waveformView.frame.size.width/currentTrack.durationInMilliseconds;
+    //CGFloat progressWidth = waveformProgressBar.frame.size.width + 1000.00*timerInterval*waveformView.frame.size.width/currentTrack.durationInMilliseconds;
     
-    if(progressWidth < 0 )
+    CGFloat progressWidth = waveformView.frame.size.width * ((CGFloat)(musicPlayer.currentTime.value/musicPlayer.currentTime.timescale) / (currentTrack.durationInMilliseconds/1000.00));
+    
+    NSLog(@"MusicPlayer's currentTime: %lld, progressWidth: %f", musicPlayer.currentTime.value/musicPlayer.currentTime.timescale, progressWidth);
+    
+/*    if(progressWidth < 0 )
     {
         progressWidth = 0;
     }
@@ -247,10 +267,10 @@
         progressWidth = waveformView.frame.size.width;
         [timerToUpdateProgressBar invalidate];
     }
-    
-    [UIView animateWithDuration:timerInterval animations:^{
+    */
+   // [UIView animateWithDuration:timerInterval animations:^{
         waveformProgressBar.frame = CGRectMake(waveformView.frame.origin.x, waveformView.frame.origin.y, progressWidth, waveformView.frame.size.height);
-    }];
+   // }];
 }
 
 - (void)didReceiveMemoryWarning
