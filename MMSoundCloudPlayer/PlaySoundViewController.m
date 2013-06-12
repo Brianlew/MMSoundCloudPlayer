@@ -57,7 +57,7 @@
     nextTrack = [[Track alloc] init];
     previousTrack = [[Track alloc] init];
 
-    timerInterval = .2;
+    timerInterval = .1;
     
     [self setUpGestureRecognizer];
         
@@ -70,7 +70,6 @@
     NSLog(@"MusicPlayer Rate: %f", musicPlayer.rate);
     if ([keyPath isEqualToString:@"rate"]) {
         if (musicPlayer.rate) {
-            [self updateSoundProgressBar];
              timerToUpdateProgressBar = [NSTimer scheduledTimerWithTimeInterval:timerInterval target:self selector:@selector(updateSoundProgressBar) userInfo:nil repeats:YES];
             NSLog(@"Playing");
         }
@@ -252,25 +251,22 @@
 }
 
 -(void)updateSoundProgressBar
-{
-    //CGFloat progressWidth = waveformProgressBar.frame.size.width + 1000.00*timerInterval*waveformView.frame.size.width/currentTrack.durationInMilliseconds;
+{    
+    CGFloat progressWidth = waveformView.frame.size.width * CMTimeGetSeconds([musicPlayer currentTime]) / (currentTrack.durationInMilliseconds/1000.00);
     
-    CGFloat progressWidth = waveformView.frame.size.width * ((CGFloat)(musicPlayer.currentTime.value/musicPlayer.currentTime.timescale) / (currentTrack.durationInMilliseconds/1000.00));
+    NSLog(@"MusicPlayer's currentTime: %f, progressWidth: %f, CurrentTrackDuration: %i", CMTimeGetSeconds([musicPlayer currentTime]), progressWidth, currentTrack.durationInMilliseconds);
     
-    NSLog(@"MusicPlayer's currentTime: %lld, progressWidth: %f", musicPlayer.currentTime.value/musicPlayer.currentTime.timescale, progressWidth);
-    
-/*    if(progressWidth < 0 )
+    if(progressWidth < 0 )
     {
         progressWidth = 0;
     }
     if (progressWidth > waveformView.frame.size.width) {
         progressWidth = waveformView.frame.size.width;
-        [timerToUpdateProgressBar invalidate];
     }
-    */
-   // [UIView animateWithDuration:timerInterval animations:^{
+    
+    [UIView animateWithDuration:timerInterval animations:^{
         waveformProgressBar.frame = CGRectMake(waveformView.frame.origin.x, waveformView.frame.origin.y, progressWidth, waveformView.frame.size.height);
-   // }];
+    }];
 }
 
 - (void)didReceiveMemoryWarning
