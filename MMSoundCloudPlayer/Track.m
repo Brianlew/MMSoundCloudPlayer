@@ -18,7 +18,7 @@
         
         NSBlockOperation *showArtworkOperation = [NSBlockOperation blockOperationWithBlock:^{
             self.artWork = artwork;
-            if (imageView != nil) {
+            if (imageView != nil && artwork != nil) {
                 imageView.image = self.artWork;
             }
         }];
@@ -37,7 +37,7 @@
         
         NSBlockOperation *showArtworkOperation = [NSBlockOperation blockOperationWithBlock:^{
             self.waveformImage = waveform;
-            if (imageView != nil) {
+            if (imageView != nil && waveform != nil) {
                 imageView.image = self.waveformImage;
             }
         }];

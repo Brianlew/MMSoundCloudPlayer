@@ -97,9 +97,6 @@
     else{
         [artworkArray insertObject:[UIImage imageNamed:@"cloud.png"] atIndex:indexPath.row];
         cell.imageView.image = artworkArray[indexPath.row];
-
-     //   NSLog(@"IndexPath Row: %i", indexPath.row);
-      //  NSLog(@"artworkurl: %@", collection[indexPath.row][@"artwork_url"]);
         
         NSURL *artworkUrl;
         if (collection[indexPath.row][@"artwork_url"] != [NSNull null]) {
@@ -125,8 +122,10 @@
         UIImage *artwork = [UIImage imageWithData:artworkData];
         
         NSBlockOperation *showArtworkOperation = [NSBlockOperation blockOperationWithBlock:^{
-            [artworkArray replaceObjectAtIndex:indexPath.row withObject:artwork];
-            [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:NO];
+            if (artwork != nil) {
+                [artworkArray replaceObjectAtIndex:indexPath.row withObject:artwork];
+                [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:NO];
+            }
         }];
         
         [[NSOperationQueue mainQueue] addOperation:showArtworkOperation];
