@@ -32,6 +32,7 @@
 		D36B769D176A0FBD00F130B1 /* pauseButton.png in Resources */ = {isa = PBXBuildFile; fileRef = D36B769C176A0FBD00F130B1 /* pauseButton.png */; };
 		D36B769F176A140500F130B1 /* fastForward.png in Resources */ = {isa = PBXBuildFile; fileRef = D36B769E176A140500F130B1 /* fastForward.png */; };
 		D36B76A1176A16F800F130B1 /* rewind.png in Resources */ = {isa = PBXBuildFile; fileRef = D36B76A0176A16F800F130B1 /* rewind.png */; };
+		D36B76A3176A3EB400F130B1 /* backButton.png in Resources */ = {isa = PBXBuildFile; fileRef = D36B76A2176A3EB400F130B1 /* backButton.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -69,6 +70,7 @@
 		D36B769C176A0FBD00F130B1 /* pauseButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pauseButton.png; sourceTree = "<group>"; };
 		D36B769E176A140500F130B1 /* fastForward.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fastForward.png; sourceTree = "<group>"; };
 		D36B76A0176A16F800F130B1 /* rewind.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rewind.png; sourceTree = "<group>"; };
+		D36B76A2176A3EB400F130B1 /* backButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = backButton.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,6 +92,7 @@
 		D30B2ED81763994700FC997F /* images */ = {
 			isa = PBXGroup;
 			children = (
+				D36B76A2176A3EB400F130B1 /* backButton.png */,
 				D36B76A0176A16F800F130B1 /* rewind.png */,
 				D36B769E176A140500F130B1 /* fastForward.png */,
 				D36B769C176A0FBD00F130B1 /* pauseButton.png */,
@@ -233,6 +236,7 @@
 				D36B769D176A0FBD00F130B1 /* pauseButton.png in Resources */,
 				D36B769F176A140500F130B1 /* fastForward.png in Resources */,
 				D36B76A1176A16F800F130B1 /* rewind.png in Resources */,
+				D36B76A3176A3EB400F130B1 /* backButton.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

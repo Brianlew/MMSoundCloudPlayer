@@ -47,6 +47,11 @@
     tableView.dataSource = self;
     
     nowPlayingButton.hidden = YES;
+    
+    if (playSoundViewController ==  nil) {
+        UIStoryboard *storyboard = self.storyboard;
+        playSoundViewController = [storyboard instantiateViewControllerWithIdentifier:@"playSoundVC"];
+    }
 }
 
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
@@ -55,6 +60,7 @@
     self.searchBar.showsCancelButton = NO;
     [self.searchBar resignFirstResponder];
     [artworkArray removeAllObjects];
+    playSoundViewController.currentIndex = -1;
     
     NSString *searchText = self.searchBar.text;
     NSString *encodedSearchText = [searchText stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
@@ -112,8 +118,21 @@
         }
     }
     
+  //  cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
+  //  cell.textLabel.numberOfLines = 0;
+    
     return cell;
 }
+/*
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+    CGSize constraintSize = CGSizeMake(280.0f, MAXFLOAT);
+    CGSize titleLabelSize = [cell.textLabel.text sizeWithFont:cell.textLabel.font constrainedToSize:constraintSize lineBreakMode:NSLineBreakByWordWrapping];
+    CGSize detailLabelSize = [cell.detailTextLabel.text sizeWithFont:cell.detailTextLabel.font constrainedToSize:constraintSize lineBreakMode:NSLineBreakByWordWrapping];
+    
+    return titleLabelSize.height + detailLabelSize.height;
+}*/
 
 -(void)loadArtworkWithUrl:(NSURL*)artworkUrl atIndexPath:(NSIndexPath*)indexPath
 {
@@ -142,13 +161,6 @@
     //[self playSound:streamUrl];
 
     //[self performSegueWithIdentifier:@"playSoundSegue" sender:self];
-    
-   
-    
-    if (playSoundViewController ==  nil) {        
-        UIStoryboard *storyboard = self.storyboard;
-        playSoundViewController = [storyboard instantiateViewControllerWithIdentifier:@"playSoundVC"];
-    }
     
     if (playSoundViewController.currentIndex != indexPath.row) {
         playSoundViewController.newSoundSelected = YES;
