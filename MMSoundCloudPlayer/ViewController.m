@@ -33,7 +33,7 @@
 
 @implementation ViewController
 
-@synthesize searchBar, tableView;
+@synthesize searchBar, tableView, nowPlayingButton;
 
 - (void)viewDidLoad
 {
@@ -46,11 +46,13 @@
     tableView.delegate = self;
     tableView.dataSource = self;
     
+    nowPlayingButton.hidden = YES;
 }
 
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
     NSLog(@"Search button was clicked: %@", self.searchBar.text);
+    self.searchBar.showsCancelButton = NO;
     [self.searchBar resignFirstResponder];
     [artworkArray removeAllObjects];
     
@@ -141,63 +143,55 @@
 
     //[self performSegueWithIdentifier:@"playSoundSegue" sender:self];
     
+   
+    
     if (playSoundViewController ==  nil) {        
         UIStoryboard *storyboard = self.storyboard;
         playSoundViewController = [storyboard instantiateViewControllerWithIdentifier:@"playSoundVC"];
     }
     
-    playSoundViewController.playlistArray = collection;
-    playSoundViewController.currentIndex = indexPath.row;
- 
+    if (playSoundViewController.currentIndex != indexPath.row) {
+        playSoundViewController.newSoundSelected = YES;
+        playSoundViewController.playlistArray = collection;
+        playSoundViewController.currentIndex = indexPath.row;
+    }
+    else
+    {
+        playSoundViewController.newSoundSelected = NO;
+    }
     
     [self presentViewController: playSoundViewController animated:YES completion:nil];
+}
+
+- (IBAction)goToNowPlaying:(id)sender {
+    
+    playSoundViewController.newSoundSelected = NO;
+    [self presentViewController: playSoundViewController animated:YES completion:nil];
+    
 }
 
 -(void)retainPlaySoundViewController
 {
     playSoundViewController = (PlaySoundViewController*)self.presentedViewController;
+    nowPlayingButton.hidden = NO;
 }
 
-/*-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+-(void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
-    NSIndexPath *indexPath = [tableView indexPathForSelectedRow];
-    NSString *streamUrlString = [NSString stringWithFormat:@"%@?client_id=%@", collection[indexPath.row][@"stream_url"], clientId];
-    NSLog(@"streamUrlString: %@", streamUrlString);
-    NSURL *streamUrl = [NSURL URLWithString:streamUrlString];
-    
-    NSInteger durationInMilliseconds = [collection[indexPath.row][@"duration"] integerValue];
-    NSURL *waveformUrl = [NSURL URLWithString:collection[indexPath.row][@"waveform_url"]];
-    
-    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    UIImage *artworkImage = cell.imageView.image;
-
-    [musicPlayer pause];
-    ((PlaySoundViewController*)segue.destinationViewController).musicPlayer = [musicPlayer initWithURL:streamUrl];
-    ((PlaySoundViewController*)segue.destinationViewController).streamUrl = streamUrl;
-    ((PlaySoundViewController*)segue.destinationViewController).durationInMilliseconds = durationInMilliseconds;
-    ((PlaySoundViewController*)segue.destinationViewController).waveformUrl = waveformUrl;
-    ((PlaySoundViewController*)segue.destinationViewController).artworkImage = artworkImage;
+    self.searchBar.showsCancelButton = NO;
+    [self.searchBar resignFirstResponder];
 }
 
--(void)playSound:(NSURL *)streamUrl
+-(void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
 {
-    NSError *error;
-    musicPlayer = [AVPlayer playerWithURL:streamUrl];
-    
-    if (musicPlayer==nil) {
-        NSLog(@"Error: %@", error.description);
-    }
-    else
-    {
-        [musicPlayer play];
-    }
-
-}*/
+    self.searchBar.showsCancelButton = YES;
+}
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
 
 @end

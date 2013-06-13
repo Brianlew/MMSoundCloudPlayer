@@ -20,9 +20,11 @@
     NSTimer *timerToUpdateProgressBar;
     CGFloat timerInterval;
     
-    Track *currentTrack;
     Track *previousTrack;
     Track *nextTrack;
+    
+    UIImage *playButtonImage;
+    UIImage *pauseButtonImage;
 }
 
 -(void)updateSoundProgressBar;
@@ -34,7 +36,7 @@
 
 @implementation PlaySoundViewController
 
-@synthesize musicPlayer, currentIndex, playlistArray, artworkImageView, waveformProgressBar, waveformView, waveformShapeView, titleLabel, usernameLabel;
+@synthesize musicPlayer, currentIndex, playlistArray, artworkImageView, waveformProgressBar, waveformView, waveformShapeView, titleLabel, usernameLabel, newSoundSelected, currentTrack, playPauseButton;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -60,7 +62,14 @@
     timerInterval = .1;
     
     [self setUpGestureRecognizer];
-        
+    
+    playButtonImage = [UIImage imageNamed:@"playButton.png"];
+    pauseButtonImage = [UIImage imageNamed:@"pauseButton.png"];
+    
+    [playPauseButton setBackgroundImage:playButtonImage forState:UIControlStateNormal];
+    
+    
+    
 }
 
 -(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
@@ -71,9 +80,16 @@
     if ([keyPath isEqualToString:@"rate"]) {
         if (musicPlayer.rate) {
              timerToUpdateProgressBar = [NSTimer scheduledTimerWithTimeInterval:timerInterval target:self selector:@selector(updateSoundProgressBar) userInfo:nil repeats:YES];
+            
+            //[playPauseButton setTitle:@"Pause" forState:UIControlStateNormal];
+            [playPauseButton setBackgroundImage:pauseButtonImage forState:UIControlStateNormal];
+
             NSLog(@"Playing");
         }
         else {
+           // [playPauseButton setTitle:@"Play" forState:UIControlStateNormal];
+            [playPauseButton setBackgroundImage:playButtonImage forState:UIControlStateNormal];
+
             NSLog(@"Paused");
         }
     }
@@ -83,16 +99,18 @@
 {
     [super viewDidAppear:YES];
     
-    [self loadTrack:currentTrack forIndex:currentIndex];
-    
-    if (currentIndex > 0) {
-        [self loadTrack:previousTrack forIndex:currentIndex-1];
+    if (newSoundSelected) {
+        [self loadTrack:currentTrack forIndex:currentIndex];
+        
+        if (currentIndex > 0) {
+            [self loadTrack:previousTrack forIndex:currentIndex-1];
+        }
+        if (currentIndex < playlistArray.count -1) {
+            [self loadTrack:nextTrack forIndex:currentIndex+1];
+        }
+        
+        [self displayCurrentTrack];
     }
-    if (currentIndex < playlistArray.count -1) {
-        [self loadTrack:nextTrack forIndex:currentIndex+1];
-    }
-
-    [self displayCurrentTrack];
 }
 
 -(void)displayCurrentTrack
@@ -167,32 +185,45 @@
     [waveformView addGestureRecognizer:panGesture];
 }
 
-- (IBAction)playSound:(id)sender {
-    [musicPlayer play];
-}
 
-- (IBAction)pauseSound:(id)sender {
-    [musicPlayer pause];
+
+- (IBAction)playPauseSound:(id)sender {
+    //if ([playPauseButton.titleLabel.text isEqualToString:@"Play"]) {
+    if ([[playPauseButton backgroundImageForState:UIControlStateNormal] isEqual:playButtonImage]) {
+        [musicPlayer play];
+    }
+    else if ([[playPauseButton backgroundImageForState:UIControlStateNormal] isEqual:pauseButtonImage]) {
+        [musicPlayer pause];
+    }
 }
 
 - (IBAction)skipToPreviousSong:(id)sender {
-    [musicPlayer pause];
-    currentIndex--;
-    nextTrack = [Track createTrackFromTrack:currentTrack];
-    currentTrack = [Track createTrackFromTrack:previousTrack];
-    [self displayCurrentTrack];
     
-    if (currentIndex <= 0) {
-        [self loadTrack:previousTrack forIndex:playlistArray.count-1];
+    if (CMTimeGetSeconds(musicPlayer.currentTime) < 2) { //go to previous song
+        [musicPlayer pause];
+        currentIndex--;
+        nextTrack = [Track createTrackFromTrack:currentTrack];
+        currentTrack = [Track createTrackFromTrack:previousTrack];
+        [self displayCurrentTrack];
+        
+        if (currentIndex <= 0) {
+            [self loadTrack:previousTrack forIndex:playlistArray.count-1];
+        }
+        else
+        {
+            [self loadTrack:previousTrack forIndex:currentIndex-1];
+        }
+        
+        if (currentIndex < 0) {
+            currentIndex = playlistArray.count - 1;
+        }
     }
-    else
+    else //restart song from beginning
     {
-        [self loadTrack:previousTrack forIndex:currentIndex-1];
+        [musicPlayer seekToTime:CMTimeMake(0, 1000)];
+        waveformProgressBar.frame = CGRectMake(waveformProgressBar.frame.origin.x, waveformProgressBar.frame.origin.y, 0, waveformProgressBar.frame.size.height);
     }
     
-    if (currentIndex < 0) {
-        currentIndex = playlistArray.count - 1;
-    }
 }
 
 - (IBAction)skipToNextSong:(id)sender {
@@ -252,9 +283,9 @@
 
 -(void)updateSoundProgressBar
 {    
-    CGFloat progressWidth = waveformView.frame.size.width * CMTimeGetSeconds([musicPlayer currentTime]) / (currentTrack.durationInMilliseconds/1000.00);
+    CGFloat progressWidth = waveformView.frame.size.width * CMTimeGetSeconds(musicPlayer.currentTime) / (currentTrack.durationInMilliseconds/1000.00);
     
-    NSLog(@"MusicPlayer's currentTime: %f, progressWidth: %f, CurrentTrackDuration: %i", CMTimeGetSeconds([musicPlayer currentTime]), progressWidth, currentTrack.durationInMilliseconds);
+    NSLog(@"MusicPlayer's currentTime: %f, progressWidth: %f, CurrentTrackDuration: %i", CMTimeGetSeconds(musicPlayer.currentTime), progressWidth, currentTrack.durationInMilliseconds);
     
     if(progressWidth < 0 )
     {
@@ -264,9 +295,9 @@
         progressWidth = waveformView.frame.size.width;
     }
     
-    [UIView animateWithDuration:timerInterval animations:^{
+   // [UIView animateWithDuration:timerInterval animations:^{
         waveformProgressBar.frame = CGRectMake(waveformView.frame.origin.x, waveformView.frame.origin.y, progressWidth, waveformView.frame.size.height);
-    }];
+   // }];
 }
 
 - (void)didReceiveMemoryWarning

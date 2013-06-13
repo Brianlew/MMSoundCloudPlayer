@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
 #import "RetainPlaySoundViewControllerProtocol.h"
+#import "Track.h"
 
 @interface PlaySoundViewController : UIViewController <UIGestureRecognizerDelegate>
 
@@ -23,12 +24,15 @@
 @property (weak, nonatomic) IBOutlet UIImageView *waveformShapeView;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
+@property (strong, nonatomic) Track *currentTrack;
+
 
 @property (strong, nonatomic) id<RetainPlaySoundViewControllerProtocol> delegate;
+@property BOOL newSoundSelected;
 
+@property (weak, nonatomic) IBOutlet UIButton *playPauseButton;
+- (IBAction)playPauseSound:(id)sender;
 
-- (IBAction)playSound:(id)sender;
-- (IBAction)pauseSound:(id)sender;
 - (IBAction)skipToPreviousSong:(id)sender;
 - (IBAction)skipToNextSong:(id)sender;
 - (IBAction)backToSearchResults:(id)sender;
