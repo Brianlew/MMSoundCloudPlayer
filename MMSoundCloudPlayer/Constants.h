@@ -10,5 +10,12 @@
 #define MMSoundCloudPlayer_Constants_h
 
 static NSString *sClientId = @"448b448032053786dd3c33df2f96b1ad";
+static NSString *sTitle = @"title";
+static NSString *sUser = @"user";
+static NSString *sUserName = @"username";
+static NSString *sArtworkUrl = @"artwork_url";
+static NSString *sAvatarUrl = @"avatar_url";
+
+
 
 #endif

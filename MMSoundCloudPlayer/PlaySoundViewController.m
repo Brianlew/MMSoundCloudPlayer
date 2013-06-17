@@ -58,10 +58,6 @@
     operationQueue = [[NSOperationQueue alloc] init];
 
     self.delegate = (ViewController*)self.presentingViewController;
-    
-    currentTrack = [[Track alloc] init];
-    nextTrack = [[Track alloc] init];
-    previousTrack = [[Track alloc] init];
 
     timerInterval = .1;
     resize = @"-crop";
@@ -111,12 +107,16 @@
     [super viewDidAppear:YES];
     
     if (newSoundSelected) {
+        currentTrack = [[Track alloc] init];
+        
         [self loadTrack:currentTrack forIndex:currentIndex];
         
         if (currentIndex > 0) {
+            previousTrack = [[Track alloc] init];
             [self loadTrack:previousTrack forIndex:currentIndex-1];
         }
         if (currentIndex < playlistArray.count -1) {
+            nextTrack = [[Track alloc] init];
             [self loadTrack:nextTrack forIndex:currentIndex+1];
         }
         
@@ -175,7 +175,7 @@
         artworkUrlResized = [playlistArray[index][@"artwork_url"] stringByReplacingOccurrencesOfString:@"-large" withString:resize];
         track.artworkUrl = [NSURL URLWithString:artworkUrlResized];
     }
-    else if (![playlistArray[index][@"user"][@"avatar_url"] isEqual:@"https://a1.sndcdn.com/images/default_avatar_large.png?0c5f27c"])
+    else if ([playlistArray[index][@"user"][@"avatar_url"] rangeOfString:@"sndcdn.com/images/default_avatar_large.png"].location == NSNotFound)
     {
         artworkUrlResized = [playlistArray[index][@"user"][@"avatar_url"] stringByReplacingOccurrencesOfString:@"-large" withString:resize];
         track.artworkUrl = [NSURL URLWithString:artworkUrlResized];
