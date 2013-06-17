@@ -156,6 +156,18 @@
                                         </subviews>
                                         <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
                                     </view>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="0:00:00" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Egt-2C-2Sf">
+                                        <rect key="frame" x="5" y="0.0" width="68" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="12"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="-0:00:00" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="pGt-db-UP1">
+                                        <rect key="frame" x="252" y="0.0" width="63" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="12"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" white="0.94163435218978098" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
@@ -240,6 +252,8 @@
                         <outlet property="fastForwardButtonOutlet" destination="ZNf-oI-k1n" id="DI9-Ln-xLZ"/>
                         <outlet property="playPauseButton" destination="cRa-iZ-nhy" id="Lf2-BD-9gp"/>
                         <outlet property="rewindButtonOutlet" destination="mXx-Ck-mMv" id="kxo-ph-4OD"/>
+                        <outlet property="soundTimeLabel" destination="Egt-2C-2Sf" id="EFF-Uc-Oy5"/>
+                        <outlet property="soundTimeRemainingLabel" destination="pGt-db-UP1" id="Fpe-WO-up3"/>
                         <outlet property="usernameLabel" destination="1yW-JE-ZGO" id="Kew-xm-sc6"/>
                         <outlet property="waveformProgressBar" destination="gZl-EW-8x5" id="q1B-B5-cED"/>
                         <outlet property="waveformShapeView" destination="VI1-uA-szq" id="qWa-ou-NNv"/>
@@ -274,6 +288,8 @@
                 <relationship kind="outlet" name="fastForwardButtonOutlet" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="playPauseButton" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="rewindButtonOutlet" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="soundTimeLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="soundTimeRemainingLabel" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="usernameLabel" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="waveformProgressBar" candidateClass="UIView"/>
                 <relationship kind="outlet" name="waveformShapeView" candidateClass="UIImageView"/>

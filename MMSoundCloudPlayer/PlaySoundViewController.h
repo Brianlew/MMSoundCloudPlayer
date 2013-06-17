@@ -23,6 +23,8 @@
 @property (weak, nonatomic) IBOutlet UIView *waveformView;
 @property (weak, nonatomic) IBOutlet UIImageView *waveformShapeView;
 @property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *soundTimeLabel;
+@property (weak, nonatomic) IBOutlet UILabel *soundTimeRemainingLabel;
 
 @property (strong, nonatomic) Track *currentTrack;
 

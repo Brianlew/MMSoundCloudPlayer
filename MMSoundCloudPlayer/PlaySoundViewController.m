@@ -25,8 +25,10 @@
     
     UIImage *playButtonImage;
     UIImage *pauseButtonImage;
-    
+        
     NSString *resize;
+    NSInteger soundSeconds;
+    NSInteger soundRemainingSeconds;
 }
 
 -(void)updateSoundProgressBar;
@@ -38,7 +40,7 @@
 
 @implementation PlaySoundViewController
 
-@synthesize musicPlayer, currentIndex, playlistArray, artworkImageView, waveformProgressBar, waveformView, waveformShapeView, newSoundSelected, currentTrack, playPauseButton, usernameLabel, backButtonOutlet, rewindButtonOutlet, fastForwardButtonOutlet;
+@synthesize musicPlayer, currentIndex, playlistArray, artworkImageView, waveformProgressBar, waveformView, waveformShapeView, newSoundSelected, currentTrack, playPauseButton, usernameLabel, backButtonOutlet, rewindButtonOutlet, fastForwardButtonOutlet, soundTimeLabel, soundTimeRemainingLabel;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -307,10 +309,27 @@
 }
 
 -(void)updateSoundProgressBar
-{    
+{
+    soundSeconds = CMTimeGetSeconds(musicPlayer.currentTime);
+    soundRemainingSeconds = currentTrack.durationInMilliseconds/1000 - soundSeconds;
+    
+    if (currentTrack.durationInMilliseconds <= 10*60*1000) {
+        soundTimeLabel.text = [NSString stringWithFormat:@"%01d:%02d", soundSeconds/60,soundSeconds%60];
+        soundTimeRemainingLabel.text = [NSString stringWithFormat:@"-%01d:%02d", soundRemainingSeconds/60,soundRemainingSeconds%60];
+
+    }
+    else if (currentTrack.durationInMilliseconds <= 10*60*1000*6){
+        soundTimeLabel.text = [NSString stringWithFormat:@"%02d:%02d", soundSeconds/60,soundSeconds%60];
+        soundTimeRemainingLabel.text = [NSString stringWithFormat:@"-%02d:%02d", soundRemainingSeconds/60,soundRemainingSeconds%60];
+    }
+    else {
+        soundTimeLabel.text = [NSString stringWithFormat:@"%01d:%02d:%02d", soundSeconds/(60*60), soundSeconds/60,soundSeconds%60];
+        soundTimeRemainingLabel.text = [NSString stringWithFormat:@"-%01d:%02d:%02d", soundRemainingSeconds/(60*60), soundRemainingSeconds/60, soundRemainingSeconds%60];
+    }
+    
     CGFloat progressWidth = waveformView.frame.size.width * CMTimeGetSeconds(musicPlayer.currentTime) / (currentTrack.durationInMilliseconds/1000.00);
     
-    NSLog(@"MusicPlayer's currentTime: %f, progressWidth: %f, CurrentTrackDuration: %i", CMTimeGetSeconds(musicPlayer.currentTime), progressWidth, currentTrack.durationInMilliseconds);
+    NSLog(@"MusicPlayer's currentTime: %i, progressWidth: %f, CurrentTrackDuration: %i", soundSeconds, progressWidth, currentTrack.durationInMilliseconds);
     
     if(progressWidth < 0 )
     {
