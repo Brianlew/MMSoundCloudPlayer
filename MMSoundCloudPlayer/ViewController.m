@@ -33,7 +33,7 @@
 
 @implementation ViewController
 
-@synthesize searchBar, tableView, nowPlayingButton;
+@synthesize searchBar, tableView, nowPlayingButton, activityIndicator;
 
 - (void)viewDidLoad
 {
@@ -52,6 +52,9 @@
         UIStoryboard *storyboard = self.storyboard;
         playSoundViewController = [storyboard instantiateViewControllerWithIdentifier:@"playSoundVC"];
     }
+    
+    tableView.frame = CGRectMake(tableView.frame.origin.x, tableView.frame.origin.y-30, tableView.frame.size.width, tableView.frame.size.height+30);
+
 }
 
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
@@ -61,6 +64,11 @@
     [self.searchBar resignFirstResponder];
     [artworkArray removeAllObjects];
     playSoundViewController.currentIndex = -1;
+    
+    [activityIndicator startAnimating];
+    [UIView animateWithDuration:.5 animations:^{
+        tableView.frame = CGRectMake(tableView.frame.origin.x, tableView.frame.origin.y+30, tableView.frame.size.width, tableView.frame.size.height-30);
+    }];
     
     NSString *searchText = self.searchBar.text;
     NSString *encodedSearchText = [searchText stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
@@ -75,6 +83,11 @@
         artworkArray = [[NSMutableArray alloc] initWithCapacity:collection.count];
         [tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
 
+        [activityIndicator stopAnimating];
+        [UIView animateWithDuration:.5 animations:^{
+            tableView.frame = CGRectMake(tableView.frame.origin.x, tableView.frame.origin.y-30, tableView.frame.size.width, tableView.frame.size.height+30);
+        }];
+        
         [tableView reloadData];
     } ];
 }
@@ -118,21 +131,23 @@
         }
     }
     
-  //  cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
-  //  cell.textLabel.numberOfLines = 0;
+    if (collection[indexPath.row][@"streamable"] == [[NSNumber alloc] initWithBool:NO]) {
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.accessoryType = UITableViewCellAccessoryNone;
+    }
     
     return cell;
 }
-/*
--(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+
+-(NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
-    CGSize constraintSize = CGSizeMake(280.0f, MAXFLOAT);
-    CGSize titleLabelSize = [cell.textLabel.text sizeWithFont:cell.textLabel.font constrainedToSize:constraintSize lineBreakMode:NSLineBreakByWordWrapping];
-    CGSize detailLabelSize = [cell.detailTextLabel.text sizeWithFont:cell.detailTextLabel.font constrainedToSize:constraintSize lineBreakMode:NSLineBreakByWordWrapping];
-    
-    return titleLabelSize.height + detailLabelSize.height;
-}*/
+    if (collection[indexPath.row][@"streamable"] == [[NSNumber alloc] initWithBool:NO]) {
+        return nil;
+    }
+    else {
+        return indexPath;
+    }
+}
 
 -(void)loadArtworkWithUrl:(NSURL*)artworkUrl atIndexPath:(NSIndexPath*)indexPath
 {

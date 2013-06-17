@@ -16,6 +16,7 @@
 @property (strong, nonatomic) UIImage *currentArtworkImage;
 
 @property (weak, nonatomic) IBOutlet UIButton *nowPlayingButton;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 - (IBAction)goToNowPlaying:(id)sender;
 
 @end

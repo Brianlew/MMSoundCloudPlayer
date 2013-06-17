@@ -25,6 +25,8 @@
     
     UIImage *playButtonImage;
     UIImage *pauseButtonImage;
+    
+    NSString *resize;
 }
 
 -(void)updateSoundProgressBar;
@@ -36,7 +38,7 @@
 
 @implementation PlaySoundViewController
 
-@synthesize musicPlayer, currentIndex, playlistArray, artworkImageView, waveformProgressBar, waveformView, waveformShapeView, titleLabel, usernameLabel, newSoundSelected, currentTrack, playPauseButton;
+@synthesize musicPlayer, currentIndex, playlistArray, artworkImageView, waveformProgressBar, waveformView, waveformShapeView, newSoundSelected, currentTrack, playPauseButton, usernameLabel, backButtonOutlet, rewindButtonOutlet, fastForwardButtonOutlet;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -60,11 +62,16 @@
     previousTrack = [[Track alloc] init];
 
     timerInterval = .1;
+    resize = @"-crop";
     
     [self setUpGestureRecognizer];
     
     playButtonImage = [UIImage imageNamed:@"playButton.png"];
     pauseButtonImage = [UIImage imageNamed:@"pauseButton.png"];
+    [backButtonOutlet setBackgroundImage:[UIImage imageNamed:@"leftArrowSelected"] forState:UIControlStateHighlighted];
+    [rewindButtonOutlet setBackgroundImage:[UIImage imageNamed:@"rewindSelected"] forState:UIControlStateHighlighted];
+    [fastForwardButtonOutlet setBackgroundImage:[UIImage imageNamed:@"fastForwardSelected"] forState:UIControlStateHighlighted];
+
     
     [playPauseButton setBackgroundImage:playButtonImage forState:UIControlStateNormal];
     
@@ -81,14 +88,16 @@
         if (musicPlayer.rate) {
              timerToUpdateProgressBar = [NSTimer scheduledTimerWithTimeInterval:timerInterval target:self selector:@selector(updateSoundProgressBar) userInfo:nil repeats:YES];
             
-            //[playPauseButton setTitle:@"Pause" forState:UIControlStateNormal];
             [playPauseButton setBackgroundImage:pauseButtonImage forState:UIControlStateNormal];
+            [playPauseButton setBackgroundImage:[UIImage imageNamed:@"pauseButtonSelected"] forState:UIControlStateHighlighted];
+
 
             NSLog(@"Playing");
         }
         else {
-           // [playPauseButton setTitle:@"Play" forState:UIControlStateNormal];
             [playPauseButton setBackgroundImage:playButtonImage forState:UIControlStateNormal];
+            [playPauseButton setBackgroundImage:[UIImage imageNamed:@"playButtonSelected"] forState:UIControlStateHighlighted];
+
 
             NSLog(@"Paused");
         }
@@ -117,11 +126,11 @@
 {
     waveformProgressBar.frame = CGRectMake(waveformProgressBar.frame.origin.x, waveformProgressBar.frame.origin.y, 0, waveformProgressBar.frame.size.height);
     
-    titleLabel.text = currentTrack.trackTitle;
     usernameLabel.text = currentTrack.username;
     
     if (currentTrack.artWork == nil) {
         artworkImageView.image = [UIImage imageNamed:@"cloud.png"];
+        [currentTrack fetchArtworkForImageView:artworkImageView onOperationQueue:operationQueue];
     }
     else
     {
@@ -130,12 +139,15 @@
     
     if (currentTrack.waveformImage == nil) {
         waveformShapeView.image = [UIImage imageNamed:@"sampleWaveForm.png"];
+        [currentTrack fetchWaveformImageForImageView:waveformShapeView onOperationQueue:operationQueue];
+
     }
     else
     {
         waveformShapeView.image = currentTrack.waveformImage;
     }
     
+    [musicPlayer pause];
     [musicPlayer removeObserver:self forKeyPath:@"rate"];
     musicPlayer = [AVPlayer playerWithURL:currentTrack.streamUrl];
     [musicPlayer addObserver:self forKeyPath:@"rate" options:0 context:nil];
@@ -147,7 +159,7 @@
 {    
     track.index = index;
     track.trackTitle = playlistArray[index][@"title"];
-    track.username = playlistArray[index][@"user"][@"username"];;
+    track.username = playlistArray[index][@"user"][@"username"];
 
     NSString *streamUrlString = [NSString stringWithFormat:@"%@?client_id=%@", playlistArray[index][@"stream_url"], sClientId];
     track.streamUrl = [NSURL URLWithString:streamUrlString];
@@ -155,24 +167,29 @@
     track.durationInMilliseconds = [playlistArray[index][@"duration"] integerValue];
     track.waveformUrl = [NSURL URLWithString:playlistArray[index][@"waveform_url"]];
     
+    NSString *artworkUrlResized = @"NOT Resized";
+    
     if (playlistArray[index][@"artwork_url"] != [NSNull null]) {
-        track.artworkUrl = [NSURL URLWithString:playlistArray[index][@"artwork_url"]];
+        artworkUrlResized = [playlistArray[index][@"artwork_url"] stringByReplacingOccurrencesOfString:@"-large" withString:resize];
+        track.artworkUrl = [NSURL URLWithString:artworkUrlResized];
     }
-    else if (playlistArray[index][@"user"][@"avatar_url"] != [NSNull null])
+    else if (![playlistArray[index][@"user"][@"avatar_url"] isEqual:@"https://a1.sndcdn.com/images/default_avatar_large.png?0c5f27c"])
     {
-        track.artworkUrl = [NSURL URLWithString:playlistArray[index][@"user"][@"avatar_url"]];
+        artworkUrlResized = [playlistArray[index][@"user"][@"avatar_url"] stringByReplacingOccurrencesOfString:@"-large" withString:resize];
+        track.artworkUrl = [NSURL URLWithString:artworkUrlResized];
     }
     
-    if (track.index == currentIndex) {
+   /* if (track.index == currentIndex) {
+        NSLog(@"artwork resized: %@", artworkUrlResized);
         [track fetchArtworkForImageView:artworkImageView onOperationQueue:operationQueue];
         [track fetchWaveformImageForImageView:waveformShapeView onOperationQueue:operationQueue];
     }
     else
-    {
+    {*/
         [track fetchArtworkForImageView:nil onOperationQueue:operationQueue];
         [track fetchWaveformImageForImageView:nil onOperationQueue:operationQueue];
 
-    }
+ //   }
 }
 
 -(void)setUpGestureRecognizer
@@ -204,8 +221,9 @@
         currentIndex--;
         nextTrack = [Track createTrackFromTrack:currentTrack];
         currentTrack = [Track createTrackFromTrack:previousTrack];
-        [self displayCurrentTrack];
         
+        previousTrack = [[Track alloc] init];
+
         if (currentIndex <= 0) {
             [self loadTrack:previousTrack forIndex:playlistArray.count-1];
         }
@@ -217,6 +235,9 @@
         if (currentIndex < 0) {
             currentIndex = playlistArray.count - 1;
         }
+        
+        [self displayCurrentTrack];
+
     }
     else //restart song from beginning
     {
@@ -231,7 +252,8 @@
     currentIndex++;
     previousTrack = [Track createTrackFromTrack:currentTrack];
     currentTrack = [Track createTrackFromTrack:nextTrack];
-    [self displayCurrentTrack];
+    
+    nextTrack = [[Track alloc] init];
     
     if (currentIndex >= playlistArray.count - 1) {
         [self loadTrack:nextTrack forIndex:0];
@@ -244,6 +266,9 @@
     if (currentIndex > playlistArray.count - 1) {
         currentIndex = 0;
     }
+    
+    [self displayCurrentTrack];
+
 }
 
 - (void)seek {

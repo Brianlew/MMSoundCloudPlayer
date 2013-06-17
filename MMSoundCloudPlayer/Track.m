@@ -12,21 +12,26 @@
 
 -(void)fetchArtworkForImageView:(UIImageView *)imageView onOperationQueue:(NSOperationQueue *)operationQueue
 {
-    NSBlockOperation *getArtworkOperation = [NSBlockOperation blockOperationWithBlock:^{
-        NSData *artworkData = [NSData dataWithContentsOfURL:self.artworkUrl];
-        UIImage *artwork = [UIImage imageWithData:artworkData];
+    if (self.artworkUrl != nil) {
         
-        NSBlockOperation *showArtworkOperation = [NSBlockOperation blockOperationWithBlock:^{
-            self.artWork = artwork;
-            if (imageView != nil && artwork != nil) {
-                imageView.image = self.artWork;
-            }
+        NSBlockOperation *getArtworkOperation = [NSBlockOperation blockOperationWithBlock:^{
+            NSData *artworkData = [NSData dataWithContentsOfURL:self.artworkUrl];
+            UIImage *artwork = [UIImage imageWithData:artworkData];
+            
+            NSBlockOperation *showArtworkOperation = [NSBlockOperation blockOperationWithBlock:^{
+                self.artWork = artwork;
+                if (imageView != nil && artwork != nil) {
+                    imageView.image = self.artWork;
+                }
+                
+            }];
+            
+            [[NSOperationQueue mainQueue] addOperation:showArtworkOperation];
         }];
         
-        [[NSOperationQueue mainQueue] addOperation:showArtworkOperation];
-    }];
-    
-    [operationQueue addOperation:getArtworkOperation];
+        [operationQueue addOperation:getArtworkOperation];
+        
+    }
 }
 
 -(void)fetchWaveformImageForImageView:(UIImageView*)imageView onOperationQueue:(NSOperationQueue *)operationQueue

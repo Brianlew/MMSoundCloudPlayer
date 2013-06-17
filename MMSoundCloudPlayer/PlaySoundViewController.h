@@ -22,8 +22,8 @@
 @property (weak, nonatomic) IBOutlet UIView *waveformProgressBar;
 @property (weak, nonatomic) IBOutlet UIView *waveformView;
 @property (weak, nonatomic) IBOutlet UIImageView *waveformShapeView;
-@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
+
 @property (strong, nonatomic) Track *currentTrack;
 
 
@@ -31,6 +31,12 @@
 @property BOOL newSoundSelected;
 
 @property (weak, nonatomic) IBOutlet UIButton *playPauseButton;
+@property (weak, nonatomic) IBOutlet UIButton *backButtonOutlet;
+@property (weak, nonatomic) IBOutlet UIButton *rewindButtonOutlet;
+@property (weak, nonatomic) IBOutlet UIButton *fastForwardButtonOutlet;
+
+
+
 - (IBAction)playPauseSound:(id)sender;
 
 - (IBAction)skipToPreviousSong:(id)sender;
