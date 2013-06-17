@@ -327,9 +327,9 @@
         soundTimeRemainingLabel.text = [NSString stringWithFormat:@"-%01d:%02d:%02d", soundRemainingSeconds/(60*60), soundRemainingSeconds/60, soundRemainingSeconds%60];
     }
     
-    CGFloat progressWidth = waveformView.frame.size.width * CMTimeGetSeconds(musicPlayer.currentTime) / (currentTrack.durationInMilliseconds/1000.00);
+    CGFloat progressWidth = waveformShapeView.frame.size.width * CMTimeGetSeconds(musicPlayer.currentTime) / (currentTrack.durationInMilliseconds/1000.00);
     
-    NSLog(@"MusicPlayer's currentTime: %i, progressWidth: %f, CurrentTrackDuration: %i", soundSeconds, progressWidth, currentTrack.durationInMilliseconds);
+   // NSLog(@"MusicPlayer's currentTime: %i, progressWidth: %f, CurrentTrackDuration: %i", soundSeconds, progressWidth, currentTrack.durationInMilliseconds);
     
     if(progressWidth < 0 )
     {
@@ -340,7 +340,9 @@
     }
     
    // [UIView animateWithDuration:timerInterval animations:^{
-        waveformProgressBar.frame = CGRectMake(waveformView.frame.origin.x, waveformView.frame.origin.y, progressWidth, waveformView.frame.size.height);
+        waveformProgressBar.frame = CGRectMake(waveformShapeView.frame.origin.x, waveformShapeView.frame.origin.y, progressWidth, waveformShapeView.frame.size.height);
+    
+    NSLog(@"progressBar x: %f, y: %f, width: %f, height: %f", waveformProgressBar.frame.origin.x, waveformProgressBar.frame.origin.y, waveformProgressBar.frame.size.width, waveformProgressBar.frame.size.height);
    // }];
 }
 
