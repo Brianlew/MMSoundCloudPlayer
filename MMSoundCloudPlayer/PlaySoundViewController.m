@@ -274,6 +274,7 @@
 }
 
 - (void)seek {
+    [musicPlayer pause];
     
     CGPoint seekPosition = [waveformView.gestureRecognizers[0] locationInView:waveformView];
     
@@ -300,6 +301,8 @@
     
 
     NSLog(@"progress width: %f", waveformProgressBar.frame.size.width);
+    
+    [musicPlayer play];
 }
 
 - (IBAction)backToSearchResults:(id)sender {
