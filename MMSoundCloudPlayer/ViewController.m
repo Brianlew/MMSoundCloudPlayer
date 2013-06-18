@@ -192,22 +192,25 @@
 -(void)loadArtworkWithUrl:(NSURL*)artworkUrl atIndexPath:(NSIndexPath*)indexPath
 {
  //   NSLog(@"Loading artworkUrl: %@", artworkUrl);
-    [changedIndexPaths addObject:indexPath];
+    if (![changedIndexPaths containsObject:indexPath]) {
+        [changedIndexPaths addObject:indexPath];
+    }
     
     NSBlockOperation *getArtworkOperation = [NSBlockOperation blockOperationWithBlock:^{
         NSData *artworkData = [NSData dataWithContentsOfURL:artworkUrl];
         UIImage *artwork = [UIImage imageWithData:artworkData];
-        [artworkArray replaceObjectAtIndex:indexPath.row withObject:artwork];
+        
 
         NSBlockOperation *showArtworkOperation = [NSBlockOperation blockOperationWithBlock:^{
             if (artwork != nil && loading == NO) {
         //        NSLog(@"Updating Artwork for IndexPath: %i", indexPath.row);
 
-         //       NSLog(@"reload the tableview indexpath with new artwork");
-//                if ([[self.tableView indexPathsForVisibleRows] containsObject:indexPath]) {
-//                    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:NO];
-//                }
+                [artworkArray replaceObjectAtIndex:indexPath.row withObject:artwork];
 
+                NSLog(@"reload the tableview indexpath with new artwork");
+        /*        if ([[self.tableView indexPathsForVisibleRows] containsObject:indexPath]) {
+                    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:NO];
+                }*/
                 [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(reloadThese) object:nil];
                 [self performSelector:@selector(reloadThese) withObject:nil afterDelay:0.3];
             }
