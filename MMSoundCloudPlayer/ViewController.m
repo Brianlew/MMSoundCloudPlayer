@@ -21,8 +21,9 @@
     PlaySoundViewController *playSoundViewController;
     
    // AVPlayer *musicPlayer;
-    NSArray *collection;
+    NSMutableArray *collection;
     NSMutableArray *artworkArray;
+    NSURL *mostRecentSearchUrl;
     
     UIImage *defaultImage;
     UIImage *nextArtworkImage;
@@ -83,7 +84,7 @@
     if (!loading) {
         loading = YES;
         [tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
-        collection = [[NSArray alloc] init];
+        collection = [[NSMutableArray alloc] init];
         [artworkArray removeAllObjects];
         [tableView reloadData];
         
@@ -100,31 +101,49 @@
     NSString *urlString = [NSString stringWithFormat:@"https://api.soundcloud.com/search/sounds.json?client_id=%@&q=%@", sClientId, encodedSearchText];
     NSURL *url = [NSURL URLWithString:urlString];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    
+    mostRecentSearchUrl = url;
+    
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-        NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-        collection = [responseDictionary objectForKey:@"collection"];
-        artworkArray = [[NSMutableArray alloc] initWithCapacity:collection.count];
-        for (int i = 0; i < collection.count; i++) {
-            [artworkArray addObject:defaultImage];
+        
+        if ([response.URL isEqual: mostRecentSearchUrl]) {
+        
+            NSLog(@"ResponseUrl: %@", response.URL);
+            
+            NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+            collection = [responseDictionary objectForKey:@"collection"];
+            artworkArray = [[NSMutableArray alloc] initWithCapacity:collection.count];
+            
+            for (int i = 0; i < collection.count; i++) {
+                [artworkArray addObject:defaultImage];
+            }
+            
+            if (collection.count == 0) {
+                identifier = @"noResults";
+            }
+            else {
+                identifier = @"cell";
+            }
+
+            [activityIndicator stopAnimating];
+
+            [tableView reloadData];
+            
+            [UIView animateWithDuration:.5 animations:^{
+                tableView.frame = CGRectMake(tableView.frame.origin.x, tableView.frame.origin.y-30, tableView.frame.size.width, tableView.frame.size.height+30);
+            }];
+            
+            loading = NO;
         }
-
-        [activityIndicator stopAnimating];
-
-        [tableView reloadData];
-        tableHeight = tableView.frame.size.height;
-        tableY = tableView.frame.origin.y;
-        NSLog(@"table height: %f, y: %f", tableHeight, tableY);
-        
-        [UIView animateWithDuration:.5 animations:^{
-            tableView.frame = CGRectMake(tableView.frame.origin.x, tableView.frame.origin.y-30, tableView.frame.size.width, tableView.frame.size.height+30);
-        }];
-        
-        loading = NO;
     } ];
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    if ([identifier isEqualToString:@"noResults"]) {
+        return 1;
+    }
+    
     return collection.count;
 }
 
@@ -136,6 +155,10 @@
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
+    
+    if ([identifier isEqualToString:@"noResults"]) {
+        return cell;
+    }
     
     cell.textLabel.text = collection[indexPath.row][sTitle];
     cell.detailTextLabel.text = collection[indexPath.row][sUser][sUserName];
@@ -207,7 +230,7 @@
 
                 [artworkArray replaceObjectAtIndex:indexPath.row withObject:artwork];
 
-                NSLog(@"reload the tableview indexpath with new artwork");
+          //      NSLog(@"reload the tableview indexpath with new artwork");
         /*        if ([[self.tableView indexPathsForVisibleRows] containsObject:indexPath]) {
                     [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:NO];
                 }*/

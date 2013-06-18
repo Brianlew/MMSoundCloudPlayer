@@ -40,7 +40,7 @@
 
 @implementation PlaySoundViewController
 
-@synthesize musicPlayer, currentIndex, playlistArray, artworkImageView, waveformProgressBar, waveformView, waveformShapeView, newSoundSelected, currentTrack, playPauseButton, usernameLabel, backButtonOutlet, rewindButtonOutlet, fastForwardButtonOutlet, soundTimeLabel, soundTimeRemainingLabel;
+@synthesize musicPlayer, currentIndex, playlistArray, artworkImageView, waveformProgressBar, waveformView, waveformShapeView, newSoundSelected, currentTrack, playPauseButton, usernameLabel, backButtonOutlet, rewindButtonOutlet, fastForwardButtonOutlet, soundTimeLabel, soundTimeRemainingLabel, titleLabel;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -128,8 +128,9 @@
 {
     waveformProgressBar.frame = CGRectMake(waveformProgressBar.frame.origin.x, waveformProgressBar.frame.origin.y, 0, waveformProgressBar.frame.size.height);
     
+    titleLabel.text = currentTrack.trackTitle;
     usernameLabel.text = currentTrack.username;
-    
+
     if (currentTrack.artWork == nil) {
         artworkImageView.image = [UIImage imageNamed:@"cloud.png"];
         [currentTrack fetchArtworkForImageView:artworkImageView onOperationQueue:operationQueue];
