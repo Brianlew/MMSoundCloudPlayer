@@ -22,13 +22,12 @@
 @property (weak, nonatomic) IBOutlet UIView *waveformProgressBar;
 @property (weak, nonatomic) IBOutlet UIView *waveformView;
 @property (weak, nonatomic) IBOutlet UIImageView *waveformShapeView;
+@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *soundTimeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *soundTimeRemainingLabel;
-@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 
 @property (strong, nonatomic) Track *currentTrack;
-
 
 @property (strong, nonatomic) id<RetainPlaySoundViewControllerProtocol> delegate;
 @property BOOL newSoundSelected;
@@ -38,10 +37,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *rewindButtonOutlet;
 @property (weak, nonatomic) IBOutlet UIButton *fastForwardButtonOutlet;
 
-
-
 - (IBAction)playPauseSound:(id)sender;
-
 - (IBAction)skipToPreviousSong:(id)sender;
 - (IBAction)skipToNextSong:(id)sender;
 - (IBAction)backToSearchResults:(id)sender;

@@ -19,14 +19,12 @@
     NSOperationQueue *getWaveformOperationQueue;
     
     NSTimer *timerToUpdateProgressBar;
-    
+    CGFloat timerInterval;
+
     NSTimer *buttonMashTimer;
     NSInteger buttonMashCount;
     NSInteger buttonMashMax;
 
-    
-    CGFloat timerInterval;
-    
     Track *previousTrack;
     Track *nextTrack;
     
@@ -93,8 +91,38 @@
     [playPauseButton setBackgroundImage:playButtonImage forState:UIControlStateNormal];
 }
 
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:YES];
+    
+    if (newSoundSelected) {
+        currentTrack = [[Track alloc] init];
+        previousTrack = [[Track alloc] init];
+        nextTrack = [[Track alloc] init];
+        
+        [self loadTrack:currentTrack forIndex:currentIndex];
+        
+        if (currentIndex > 0) {
+            [self loadTrack:previousTrack forIndex:currentIndex-1];
+        }
+        else
+        {
+            [self loadTrack:previousTrack forIndex:playlistArray.count-1];
+        }
+        if (currentIndex < playlistArray.count -1) {
+            [self loadTrack:nextTrack forIndex:currentIndex+1];
+        }
+        else{
+            [self loadTrack:nextTrack forIndex:0];
+        }
+        
+        [self displayCurrentTrack];
+    }
+}
+
+
+
 -(BOOL)canBecomeFirstResponder{
-    NSLog(@"canBecomeFirstResponder");
     return YES;
 }
 
@@ -105,7 +133,6 @@
     if (receivedEvent.type == UIEventTypeRemoteControl){
         switch (receivedEvent.subtype){
             case UIEventSubtypeRemoteControlTogglePlayPause:
-                NSLog(@"UIEventSubtypeRemoteControlTogglePlayPause");
                 if (musicPlayer.rate) {
                     [musicPlayer pause];
                 }
@@ -114,7 +141,6 @@
                 }
                 break;
             case UIEventSubtypeRemoteControlPreviousTrack:
-                NSLog(@"UIEventSubtypeRemoteControlPreviousTrack");
                 [self skipToPreviousSong:self];
                 break;
             case UIEventSubtypeRemoteControlNextTrack:
@@ -151,35 +177,6 @@
             
             NSLog(@"Paused");
         }
-    }
-}
-
--(void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:YES];
-    
-    if (newSoundSelected) {
-        currentTrack = [[Track alloc] init];
-        previousTrack = [[Track alloc] init];
-        nextTrack = [[Track alloc] init];
-
-        [self loadTrack:currentTrack forIndex:currentIndex];
-        
-        if (currentIndex > 0) {
-            [self loadTrack:previousTrack forIndex:currentIndex-1];
-        }
-        else
-        {
-            [self loadTrack:previousTrack forIndex:playlistArray.count-1];
-        }
-        if (currentIndex < playlistArray.count -1) {
-            [self loadTrack:nextTrack forIndex:currentIndex+1];
-        }
-        else{
-            [self loadTrack:nextTrack forIndex:0];
-        }
-        
-        [self displayCurrentTrack];
     }
 }
 
@@ -284,8 +281,8 @@
 
 
 
-- (IBAction)playPauseSound:(id)sender {
-    //if ([playPauseButton.titleLabel.text isEqualToString:@"Play"]) {
+- (IBAction)playPauseSound:(id)sender
+{    
     if ([[playPauseButton backgroundImageForState:UIControlStateNormal] isEqual:playButtonImage]) {
         [musicPlayer play];
     }
@@ -294,10 +291,9 @@
     }
 }
 
-- (IBAction)skipToPreviousSong:(id)sender {
-    
+- (IBAction)skipToPreviousSong:(id)sender
+{    
     if (CMTimeGetSeconds(musicPlayer.currentTime) < 2) { //go to previous song
-   //     [musicPlayer pause];
         currentIndex--;
         nextTrack = [Track createTrackFromTrack:currentTrack];
         currentTrack = [Track createTrackFromTrack:previousTrack];
@@ -328,7 +324,6 @@
 }
 
 - (IBAction)skipToNextSong:(id)sender {
- //   [musicPlayer pause];
   
     currentIndex++;
     previousTrack = [Track createTrackFromTrack:currentTrack];
@@ -410,9 +405,7 @@
     }
     
     CGFloat progressWidth = waveformShapeView.frame.size.width * CMTimeGetSeconds(musicPlayer.currentTime) / (currentTrack.durationInMilliseconds/1000.00);
-    
-   // NSLog(@"MusicPlayer's currentTime: %i, progressWidth: %f, CurrentTrackDuration: %i", soundSeconds, progressWidth, currentTrack.durationInMilliseconds);
-    
+        
     if(progressWidth < 0 )
     {
         progressWidth = 0;

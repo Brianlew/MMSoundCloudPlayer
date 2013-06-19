@@ -10,13 +10,12 @@
 #import "RetainPlaySoundViewControllerProtocol.h"
 
 @interface ViewController : UIViewController <UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate, RetainPlaySoundViewControllerProtocol>
+
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-
-@property (strong, nonatomic) UIImage *currentArtworkImage;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
 @property (weak, nonatomic) IBOutlet UIButton *nowPlayingButton;
-@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 - (IBAction)goToNowPlaying:(id)sender;
 
 @end

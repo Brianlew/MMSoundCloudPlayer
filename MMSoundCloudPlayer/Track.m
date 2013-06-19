@@ -16,8 +16,6 @@
         
         NSBlockOperation *getArtworkOperation = [NSBlockOperation blockOperationWithBlock:^{
             
-                
-            
             NSData *artworkData = [NSData dataWithContentsOfURL:self.artworkUrl];
             UIImage *artwork = [UIImage imageWithData:artworkData];
             
@@ -26,11 +24,9 @@
                 if (imageView != nil && artwork != nil && self.index == currentIndex) {
                     imageView.image = self.artWork;
                 }
-                
             }];
             
             [[NSOperationQueue mainQueue] addOperation:showArtworkOperation];
-            
         }];
         
         [operationQueue addOperation:getArtworkOperation];

@@ -14,23 +14,20 @@
 
 @interface ViewController ()
 {
-    NSString *identifier;
-
-    NSOperationQueue *operationQueue;
-    NSMutableArray *changedIndexPaths;
-    PlaySoundViewController *playSoundViewController;
-    
-   // AVPlayer *musicPlayer;
     NSMutableArray *collection;
     NSMutableArray *artworkArray;
     NSURL *mostRecentSearchUrl;
+    NSString *identifier;
+
+    PlaySoundViewController *playSoundViewController;
+
+    NSOperationQueue *operationQueue;
+    NSMutableArray *changedIndexPaths;
     
     UIImage *defaultImage;
     UIImage *nextArtworkImage;
     
     BOOL loading;
-    CGFloat tableHeight;
-    CGFloat tableY;
 }
 
 -(void)loadArtworkWithUrl:(NSURL*)artworkUrl atIndexPath:(NSIndexPath*)indexPath;
@@ -43,7 +40,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
         
     operationQueue = [[NSOperationQueue alloc] init];
     changedIndexPaths = [NSMutableArray array];
@@ -63,24 +59,20 @@
     
     defaultImage = [UIImage imageNamed:@"cloud.png"];
     loading = NO;
-    
-    tableHeight = tableView.frame.size.height;
-    tableY = tableView.frame.origin.y;
-    NSLog(@"table height: %f, y: %f", tableHeight, tableY);
-    
-    //tableView.frame = CGRectMake(tableView.frame.origin.x, tableView.frame.origin.y-30, tableView.frame.size.width, tableView.frame.size.height+30);
-
 }
 
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
     NSLog(@"Search button was clicked: %@", self.searchBar.text);
+    
     self.searchBar.showsCancelButton = NO;
     [self.searchBar resignFirstResponder];
+   
     playSoundViewController.currentIndex = -1;
     [changedIndexPaths removeAllObjects];
     
     if (!loading) {
+        
         loading = YES;
         [tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
         collection = [[NSMutableArray alloc] init];
@@ -96,7 +88,6 @@
     
     NSString *searchText = self.searchBar.text;
     NSString *encodedSearchText = [searchText stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    NSLog(@"Encoded Search Text: %@", encodedSearchText);
     NSString *urlString = [NSString stringWithFormat:@"https://api.soundcloud.com/search/sounds.json?client_id=%@&q=%@", sClientId, encodedSearchText];
     NSURL *url = [NSURL URLWithString:urlString];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
@@ -113,7 +104,6 @@
             collection = [[NSMutableArray alloc] initWithArray: [responseDictionary objectForKey:@"collection"]];
             artworkArray = [[NSMutableArray alloc] initWithCapacity:collection.count];
             
-            NSLog(@"CollectionMutableArray: %@", collection);
             
             NSMutableIndexSet *indexSet = [[NSMutableIndexSet alloc] init];
             
@@ -173,48 +163,30 @@
     cell.textLabel.text = collection[indexPath.row][sTitle];
     cell.detailTextLabel.text = collection[indexPath.row][sUser][sUserName];
     
-//    NSLog(@"IndexPath Row: %i", indexPath.row);
     if (![artworkArray[indexPath.row] isEqual: defaultImage]) {
- //       NSLog(@"Artwork is available");
         cell.imageView.image = artworkArray[indexPath.row];
     }
     else if (!loading){
-    /*    NSLog(@"Add default image to array");
-        [artworkArray insertObject:defaultImage atIndex:indexPath.row];
-        NSLog(@"Assign image to cell");
-        cell.imageView.image = artworkArray[indexPath.row];*/
         cell.imageView.image = defaultImage;
         
         NSURL *artworkUrl;
-   //     NSLog(@"Time to find optimal artwork choice");
         if (collection[indexPath.row][sArtworkUrl] != [NSNull null]) {
-     //       NSLog(@"use artworkurl");
             artworkUrl = [NSURL URLWithString:collection[indexPath.row][sArtworkUrl]];
-       //     NSLog(@"About to queue artwork url: %@", artworkUrl);
             [self loadArtworkWithUrl:artworkUrl atIndexPath:indexPath];
         }
         else if (collection[indexPath.row][sUser][sAvatarUrl] != [NSNull null])
         {
-         //   NSLog(@"user avatar url");
             artworkUrl = [NSURL URLWithString:collection[indexPath.row][sUser][sAvatarUrl]];
-         //   NSLog(@"About to queue artwork url: %@", artworkUrl);
             [self loadArtworkWithUrl:artworkUrl atIndexPath:indexPath];
         }
     }
-    
-   /* if (collection[indexPath.row][@"streamable"] == [[NSNumber alloc] initWithBool:NO]) {
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.accessoryType = UITableViewCellAccessoryNone;
-    }*/
-    
-   // NSLog(@"Returning Cell for Index Path: %i", indexPath.row);
     
     return cell;
 }
 
 -(NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ([identifier isEqual:@"noResults"] || (collection[indexPath.row][@"streamable"] == [[NSNumber alloc] initWithBool:NO])) {
+    if ([identifier isEqual:@"noResults"]) {
         return nil;
     }
     else {
@@ -236,14 +208,14 @@
 
         NSBlockOperation *showArtworkOperation = [NSBlockOperation blockOperationWithBlock:^{
             if (artwork != nil && loading == NO) {
-        //        NSLog(@"Updating Artwork for IndexPath: %i", indexPath.row);
 
                 [artworkArray replaceObjectAtIndex:indexPath.row withObject:artwork];
 
-          //      NSLog(@"reload the tableview indexpath with new artwork");
-        /*        if ([[self.tableView indexPathsForVisibleRows] containsObject:indexPath]) {
+                //NSLog(@"reload the tableview indexpath with new artwork");
+                /*if ([[self.tableView indexPathsForVisibleRows] containsObject:indexPath]) {
                     [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:NO];
                 }*/
+                
                 [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(reloadThese) object:nil];
                 [self performSelector:@selector(reloadThese) withObject:nil afterDelay:0.3];
             }
@@ -264,10 +236,6 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    //[self playSound:streamUrl];
-
-    //[self performSegueWithIdentifier:@"playSoundSegue" sender:self];
-    
     if (playSoundViewController.currentIndex != indexPath.row) {
         playSoundViewController.newSoundSelected = YES;
         playSoundViewController.playlistArray = collection;
