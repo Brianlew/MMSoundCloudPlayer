@@ -34,7 +34,6 @@
 }
 
 -(void)loadArtworkWithUrl:(NSURL*)artworkUrl atIndexPath:(NSIndexPath*)indexPath;
-//-(void)playSound:(NSURL *)streamUrl;
 @end
 
 @implementation ViewController
@@ -111,12 +110,23 @@
             NSLog(@"ResponseUrl: %@", response.URL);
             
             NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-            collection = [responseDictionary objectForKey:@"collection"];
+            collection = [[NSMutableArray alloc] initWithArray: [responseDictionary objectForKey:@"collection"]];
             artworkArray = [[NSMutableArray alloc] initWithCapacity:collection.count];
             
+            NSLog(@"CollectionMutableArray: %@", collection);
+            
+            NSMutableIndexSet *indexSet = [[NSMutableIndexSet alloc] init];
+            
             for (int i = 0; i < collection.count; i++) {
-                [artworkArray addObject:defaultImage];
+                if (collection[i][@"streamable"] == [[NSNumber alloc] initWithBool:NO]) {
+                    [indexSet addIndex:i];
+                }
+                else {
+                    [artworkArray addObject:defaultImage];
+                }
             }
+            
+            [collection removeObjectsAtIndexes:indexSet];
             
             if (collection.count == 0) {
                 identifier = @"noResults";
