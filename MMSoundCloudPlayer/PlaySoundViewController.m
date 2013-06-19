@@ -15,9 +15,16 @@
 
 @interface PlaySoundViewController ()
 {
-    NSOperationQueue *operationQueue;
+    NSOperationQueue *getArtworkOperationQueue;
+    NSOperationQueue *getWaveformOperationQueue;
     
     NSTimer *timerToUpdateProgressBar;
+    
+    NSTimer *buttonMashTimer;
+    NSInteger buttonMashCount;
+    NSInteger buttonMashMax;
+
+    
     CGFloat timerInterval;
     
     Track *previousTrack;
@@ -55,12 +62,16 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    operationQueue = [[NSOperationQueue alloc] init];
+    getArtworkOperationQueue = [[NSOperationQueue alloc] init];
+    getWaveformOperationQueue = [[NSOperationQueue alloc] init];
 
     self.delegate = (ViewController*)self.presentingViewController;
 
     timerInterval = .1;
     resize = @"-crop";
+    
+    buttonMashCount = 0;
+    buttonMashMax = 2;
     
     [self setUpGestureRecognizer];
     
@@ -142,7 +153,10 @@
 
     if (currentTrack.artWork == nil) {
         artworkImageView.image = [UIImage imageNamed:@"cloud.png"];
-        [currentTrack fetchArtworkForImageView:artworkImageView onOperationQueue:operationQueue];
+        
+        if (buttonMashCount <= buttonMashMax) {
+            [currentTrack fetchArtworkForImageView:artworkImageView onOperationQueue:getArtworkOperationQueue withCurrentIndex:currentIndex];
+        }
     }
     else
     {
@@ -151,8 +165,10 @@
     
     if (currentTrack.waveformImage == nil) {
         waveformShapeView.image = [UIImage imageNamed:@"sampleWaveForm.png"];
-        [currentTrack fetchWaveformImageForImageView:waveformShapeView onOperationQueue:operationQueue];
-
+        
+        if (buttonMashCount <= buttonMashMax) {
+            [currentTrack fetchWaveformImageForImageView:waveformShapeView onOperationQueue:getWaveformOperationQueue withCurrentIndex:currentIndex];
+        }
     }
     else
     {
@@ -190,17 +206,29 @@
         track.artworkUrl = [NSURL URLWithString:artworkUrlResized];
     }
     
-   /* if (track.index == currentIndex) {
-        NSLog(@"artwork resized: %@", artworkUrlResized);
-        [track fetchArtworkForImageView:artworkImageView onOperationQueue:operationQueue];
-        [track fetchWaveformImageForImageView:waveformShapeView onOperationQueue:operationQueue];
+    buttonMashCount++;
+    [buttonMashTimer invalidate];
+    buttonMashTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(resetButtonMashCount) userInfo:nil repeats:NO];
+    
+    if (buttonMashCount <= buttonMashMax) {
+        [track fetchArtworkForImageView:nil onOperationQueue:getArtworkOperationQueue withCurrentIndex:currentIndex];
+        [track fetchWaveformImageForImageView:nil onOperationQueue:getWaveformOperationQueue withCurrentIndex:currentIndex];
     }
     else
-    {*/
-        [track fetchArtworkForImageView:nil onOperationQueue:operationQueue];
-        [track fetchWaveformImageForImageView:nil onOperationQueue:operationQueue];
+    {
+        [getArtworkOperationQueue cancelAllOperations];
+        [getWaveformOperationQueue cancelAllOperations];
+    }
+}
 
- //   }
+-(void)resetButtonMashCount
+{
+    if (buttonMashCount > buttonMashMax) {
+        buttonMashCount = 0;
+        [self displayCurrentTrack];
+    }
+    
+    buttonMashCount = 0;
 }
 
 -(void)setUpGestureRecognizer
@@ -260,6 +288,7 @@
 
 - (IBAction)skipToNextSong:(id)sender {
  //   [musicPlayer pause];
+  
     currentIndex++;
     previousTrack = [Track createTrackFromTrack:currentTrack];
     currentTrack = [Track createTrackFromTrack:nextTrack];

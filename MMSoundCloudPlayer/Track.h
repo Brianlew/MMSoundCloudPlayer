@@ -20,8 +20,8 @@
 @property NSInteger durationInMilliseconds;
 @property NSInteger index;
 
--(void)fetchArtworkForImageView:(UIImageView *)imageView onOperationQueue:(NSOperationQueue *)operationQueue;
--(void)fetchWaveformImageForImageView:(UIImageView*)imageView onOperationQueue:(NSOperationQueue *)operationQueue;
+-(void)fetchArtworkForImageView:(UIImageView *)imageView onOperationQueue:(NSOperationQueue *)operationQueue withCurrentIndex:(NSInteger)currentIndex;
+-(void)fetchWaveformImageForImageView:(UIImageView*)imageView onOperationQueue:(NSOperationQueue *)operationQueue withCurrentIndex:(NSInteger)currentIndex;;
 +(Track*)createTrackFromTrack:(Track*)track;
 
 @end

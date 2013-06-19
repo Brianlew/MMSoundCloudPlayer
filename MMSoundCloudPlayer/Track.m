@@ -10,23 +10,27 @@
 
 @implementation Track
 
--(void)fetchArtworkForImageView:(UIImageView *)imageView onOperationQueue:(NSOperationQueue *)operationQueue
+-(void)fetchArtworkForImageView:(UIImageView *)imageView onOperationQueue:(NSOperationQueue *)operationQueue withCurrentIndex:(NSInteger)currentIndex;
 {
     if (self.artworkUrl != nil) {
         
         NSBlockOperation *getArtworkOperation = [NSBlockOperation blockOperationWithBlock:^{
+            
+                
+            
             NSData *artworkData = [NSData dataWithContentsOfURL:self.artworkUrl];
             UIImage *artwork = [UIImage imageWithData:artworkData];
             
             NSBlockOperation *showArtworkOperation = [NSBlockOperation blockOperationWithBlock:^{
                 self.artWork = artwork;
-                if (imageView != nil && artwork != nil) {
+                if (imageView != nil && artwork != nil && self.index == currentIndex) {
                     imageView.image = self.artWork;
                 }
                 
             }];
             
             [[NSOperationQueue mainQueue] addOperation:showArtworkOperation];
+            
         }];
         
         [operationQueue addOperation:getArtworkOperation];
@@ -34,15 +38,15 @@
     }
 }
 
--(void)fetchWaveformImageForImageView:(UIImageView*)imageView onOperationQueue:(NSOperationQueue *)operationQueue
-{
+-(void)fetchWaveformImageForImageView:(UIImageView*)imageView onOperationQueue:(NSOperationQueue *)operationQueue withCurrentIndex:(NSInteger)currentIndex;
+{    
     NSBlockOperation *getWaveformOperation = [NSBlockOperation blockOperationWithBlock:^{
         NSData *waveformData = [NSData dataWithContentsOfURL:self.waveformUrl];
         UIImage *waveform = [UIImage imageWithData:waveformData];
         
         NSBlockOperation *showArtworkOperation = [NSBlockOperation blockOperationWithBlock:^{
             self.waveformImage = waveform;
-            if (imageView != nil && waveform != nil) {
+            if (imageView != nil && waveform != nil && self.index == currentIndex) {
                 imageView.image = self.waveformImage;
             }
         }];
