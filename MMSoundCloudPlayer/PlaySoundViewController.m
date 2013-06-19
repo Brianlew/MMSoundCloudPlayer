@@ -61,6 +61,14 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    //
+    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
+    [[AVAudioSession sharedInstance] setActive: YES error: nil];
+    [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
+    [self becomeFirstResponder];
+    
+    //
 	// Do any additional setup after loading the view.
     getArtworkOperationQueue = [[NSOperationQueue alloc] init];
     getWaveformOperationQueue = [[NSOperationQueue alloc] init];
@@ -83,6 +91,39 @@
 
     
     [playPauseButton setBackgroundImage:playButtonImage forState:UIControlStateNormal];
+}
+
+-(BOOL)canBecomeFirstResponder{
+    NSLog(@"canBecomeFirstResponder");
+    return YES;
+}
+
+- (void)remoteControlReceivedWithEvent:(UIEvent*)receivedEvent{
+    
+    NSLog(@"remoteControlReceivedWithEvent");
+    
+    if (receivedEvent.type == UIEventTypeRemoteControl){
+        switch (receivedEvent.subtype){
+            case UIEventSubtypeRemoteControlTogglePlayPause:
+                NSLog(@"UIEventSubtypeRemoteControlTogglePlayPause");
+                if (musicPlayer.rate) {
+                    [musicPlayer pause];
+                }
+                else {
+                    [musicPlayer play];
+                }
+                break;
+            case UIEventSubtypeRemoteControlPreviousTrack:
+                NSLog(@"UIEventSubtypeRemoteControlPreviousTrack");
+                [self skipToPreviousSong:self];
+                break;
+            case UIEventSubtypeRemoteControlNextTrack:
+                [self skipToNextSong:self];
+                break;
+            default:
+                break;
+        }
+    }
 }
 
 -(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
