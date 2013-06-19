@@ -93,6 +93,10 @@
             [playPauseButton setBackgroundImage:playButtonImage forState:UIControlStateNormal];
             [playPauseButton setBackgroundImage:[UIImage imageNamed:@"playButtonSelected"] forState:UIControlStateHighlighted];
             
+            if (ceil(waveformProgressBar.frame.size.width) >= waveformView.frame.size.width) {
+                [self skipToNextSong:self];
+            }
+            
             NSLog(@"Paused");
         }
     }
@@ -129,8 +133,10 @@
 
 -(void)displayCurrentTrack
 {
+
     waveformProgressBar.frame = CGRectMake(waveformProgressBar.frame.origin.x, waveformProgressBar.frame.origin.y, 0, waveformProgressBar.frame.size.height);
-    
+    [musicPlayer pause];
+
     titleLabel.text = currentTrack.trackTitle;
     usernameLabel.text = currentTrack.username;
 
@@ -153,7 +159,6 @@
         waveformShapeView.image = currentTrack.waveformImage;
     }
     
-    [musicPlayer pause];
     [musicPlayer removeObserver:self forKeyPath:@"rate"];
     musicPlayer = [AVPlayer playerWithURL:currentTrack.streamUrl];
     [musicPlayer addObserver:self forKeyPath:@"rate" options:0 context:nil];
@@ -223,7 +228,7 @@
 - (IBAction)skipToPreviousSong:(id)sender {
     
     if (CMTimeGetSeconds(musicPlayer.currentTime) < 2) { //go to previous song
-        [musicPlayer pause];
+   //     [musicPlayer pause];
         currentIndex--;
         nextTrack = [Track createTrackFromTrack:currentTrack];
         currentTrack = [Track createTrackFromTrack:previousTrack];
@@ -254,7 +259,7 @@
 }
 
 - (IBAction)skipToNextSong:(id)sender {
-    [musicPlayer pause];
+ //   [musicPlayer pause];
     currentIndex++;
     previousTrack = [Track createTrackFromTrack:currentTrack];
     currentTrack = [Track createTrackFromTrack:nextTrack];
