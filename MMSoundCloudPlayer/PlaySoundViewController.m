@@ -66,15 +66,12 @@
     
     playButtonImage = [UIImage imageNamed:@"playButton.png"];
     pauseButtonImage = [UIImage imageNamed:@"pauseButton.png"];
-    [backButtonOutlet setBackgroundImage:[UIImage imageNamed:@"leftArrowSelected"] forState:UIControlStateHighlighted];
+    [backButtonOutlet setBackgroundImage:[UIImage imageNamed:@"btn_nav_back_pressed"] forState:UIControlStateHighlighted];
     [rewindButtonOutlet setBackgroundImage:[UIImage imageNamed:@"rewindSelected"] forState:UIControlStateHighlighted];
     [fastForwardButtonOutlet setBackgroundImage:[UIImage imageNamed:@"fastForwardSelected"] forState:UIControlStateHighlighted];
 
     
     [playPauseButton setBackgroundImage:playButtonImage forState:UIControlStateNormal];
-    
-    
-    
 }
 
 -(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
@@ -95,8 +92,7 @@
         else {
             [playPauseButton setBackgroundImage:playButtonImage forState:UIControlStateNormal];
             [playPauseButton setBackgroundImage:[UIImage imageNamed:@"playButtonSelected"] forState:UIControlStateHighlighted];
-
-
+            
             NSLog(@"Paused");
         }
     }
@@ -108,16 +104,23 @@
     
     if (newSoundSelected) {
         currentTrack = [[Track alloc] init];
-        
+        previousTrack = [[Track alloc] init];
+        nextTrack = [[Track alloc] init];
+
         [self loadTrack:currentTrack forIndex:currentIndex];
         
         if (currentIndex > 0) {
-            previousTrack = [[Track alloc] init];
             [self loadTrack:previousTrack forIndex:currentIndex-1];
         }
+        else
+        {
+            [self loadTrack:previousTrack forIndex:playlistArray.count-1];
+        }
         if (currentIndex < playlistArray.count -1) {
-            nextTrack = [[Track alloc] init];
             [self loadTrack:nextTrack forIndex:currentIndex+1];
+        }
+        else{
+            [self loadTrack:nextTrack forIndex:0];
         }
         
         [self displayCurrentTrack];
@@ -315,7 +318,7 @@
 -(void)updateSoundProgressBar
 {
     soundSeconds = CMTimeGetSeconds(musicPlayer.currentTime);
-    soundRemainingSeconds = currentTrack.durationInMilliseconds/1000 - soundSeconds;
+    soundRemainingSeconds = floor(currentTrack.durationInMilliseconds/1000.00 - soundSeconds);
     
     if (currentTrack.durationInMilliseconds <= 10*60*1000) {
         soundTimeLabel.text = [NSString stringWithFormat:@"%01d:%02d", soundSeconds/60,soundSeconds%60];

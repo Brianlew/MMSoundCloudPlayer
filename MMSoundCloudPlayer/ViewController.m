@@ -54,7 +54,7 @@
     tableView.dataSource = self;
     identifier = @"cell";
     
-    [nowPlayingButton setBackgroundImage:[UIImage imageNamed:@"nowPlayingArrowSelected"] forState:UIControlStateHighlighted];
+    [nowPlayingButton setBackgroundImage:[UIImage imageNamed:@"btn_nav_nowplaying_pressed.png"] forState:UIControlStateHighlighted];
     nowPlayingButton.hidden = YES;
     
     if (playSoundViewController ==  nil) {
@@ -204,7 +204,7 @@
 
 -(NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (collection[indexPath.row][@"streamable"] == [[NSNumber alloc] initWithBool:NO]) {
+    if ([identifier isEqual:@"noResults"] || (collection[indexPath.row][@"streamable"] == [[NSNumber alloc] initWithBool:NO])) {
         return nil;
     }
     else {
