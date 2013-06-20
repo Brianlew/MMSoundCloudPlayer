@@ -64,7 +64,7 @@
 		D316A82C176795A000C19E80 /* Track.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Track.h; sourceTree = "<group>"; };
 		D316A82D176795A000C19E80 /* Track.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Track.m; sourceTree = "<group>"; };
 		D328CC15176622B800C26092 /* sampleWaveForm.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sampleWaveForm.png; sourceTree = "<group>"; };
-		D338BE8E1762AF0100A10543 /* MMSoundCloudPlayer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MMSoundCloudPlayer.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D338BE8E1762AF0100A10543 /* SoundStorm.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SoundStorm.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D338BE911762AF0100A10543 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		D338BE931762AF0100A10543 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		D338BE951762AF0100A10543 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -170,7 +170,7 @@
 		D338BE8F1762AF0100A10543 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				D338BE8E1762AF0100A10543 /* MMSoundCloudPlayer.app */,
+				D338BE8E1762AF0100A10543 /* SoundStorm.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -238,7 +238,7 @@
 			);
 			name = MMSoundCloudPlayer;
 			productName = MMSoundCloudPlayer;
-			productReference = D338BE8E1762AF0100A10543 /* MMSoundCloudPlayer.app */;
+			productReference = D338BE8E1762AF0100A10543 /* SoundStorm.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -387,7 +387,8 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Brian Lewis (E64F3LU3WQ)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Brian Lewis (E64F3LU3WQ)";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -396,6 +397,8 @@
 				GCC_WARN_UNUSED_VARIABLE = NO;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				PROVISIONING_PROFILE = "EBD382BD-31A3-4883-ABC3-E561D0CD4659";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "EBD382BD-31A3-4883-ABC3-E561D0CD4659";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -407,7 +410,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MMSoundCloudPlayer/MMSoundCloudPlayer-Prefix.pch";
 				INFOPLIST_FILE = "MMSoundCloudPlayer/MMSoundCloudPlayer-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = SoundStorm;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -418,7 +421,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MMSoundCloudPlayer/MMSoundCloudPlayer-Prefix.pch";
 				INFOPLIST_FILE = "MMSoundCloudPlayer/MMSoundCloudPlayer-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = SoundStorm;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

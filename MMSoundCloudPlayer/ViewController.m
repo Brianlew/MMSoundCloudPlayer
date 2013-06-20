@@ -59,7 +59,7 @@
         playSoundViewController = [storyboard instantiateViewControllerWithIdentifier:@"playSoundVC"];
     }
     
-    defaultImage = [UIImage imageNamed:@"cloud.png"];
+    defaultImage = [UIImage imageNamed:@"bg_empty_player"];
     loading = NO;
     
     // allocate a reachability object
