@@ -233,6 +233,7 @@
     
     titleLabel.text = currentTrack.trackTitle;
     usernameLabel.text = currentTrack.username;
+    artworkImageView.image = [UIImage imageNamed:@"bg_empty_player.png"];
 
     if (buttonMashCount < buttonMashMax) {
     
