@@ -105,6 +105,7 @@
             playPauseButton.userInteractionEnabled = YES;
             fastForwardButtonOutlet.userInteractionEnabled = YES;
             rewindButtonOutlet.userInteractionEnabled = YES;
+            waveformView.userInteractionEnabled = YES;
             lostInternetConnectionLabel.hidden = YES;
         }];
         
@@ -121,6 +122,7 @@
             playPauseButton.userInteractionEnabled = NO;
             fastForwardButtonOutlet.userInteractionEnabled = NO;
             rewindButtonOutlet.userInteractionEnabled = NO;
+            waveformView.userInteractionEnabled = NO;
             lostInternetConnectionLabel.hidden = NO;
         }];
         
