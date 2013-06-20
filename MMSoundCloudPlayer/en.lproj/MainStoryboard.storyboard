@@ -94,8 +94,8 @@
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yDH-rt-D1s">
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="40" id="4ON-OE-fr8"/>
-                                            <constraint firstAttribute="height" constant="44" id="G8T-Xo-HVm"/>
+                                            <constraint firstAttribute="height" constant="44" id="24l-NV-C9Y"/>
+                                            <constraint firstAttribute="width" constant="40" id="PiK-E1-uch"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                         <state key="normal" backgroundImage="btn_nav_nowplaying.png">
@@ -112,9 +112,9 @@
                                 </subviews>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstItem="yDH-rt-D1s" firstAttribute="centerY" secondItem="lvv-BG-htK" secondAttribute="centerY" type="default" id="4Os-wk-imN"/>
-                                    <constraint firstAttribute="trailing" secondItem="yDH-rt-D1s" secondAttribute="trailing" constant="6" id="9K0-FX-ccr"/>
-                                    <constraint firstItem="eso-WZ-29M" firstAttribute="top" secondItem="lvv-BG-htK" secondAttribute="top" constant="12" id="Ff0-pQ-UbA"/>
+                                    <constraint firstItem="eso-WZ-29M" firstAttribute="centerY" secondItem="yDH-rt-D1s" secondAttribute="centerY" type="default" id="CkI-jx-gY0"/>
+                                    <constraint firstAttribute="trailing" secondItem="yDH-rt-D1s" secondAttribute="trailing" constant="5" id="jJB-mb-wlq"/>
+                                    <constraint firstItem="yDH-rt-D1s" firstAttribute="centerY" secondItem="lvv-BG-htK" secondAttribute="centerY" type="default" id="ocn-SL-DkB"/>
                                     <constraint firstItem="eso-WZ-29M" firstAttribute="centerX" secondItem="lvv-BG-htK" secondAttribute="centerX" type="default" id="sbE-Bq-Lcg"/>
                                 </constraints>
                             </view>
@@ -315,7 +315,7 @@
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IPI-pT-ne0">
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="44" id="C9m-zU-t2a"/>
+                                    <constraint firstAttribute="height" constant="44" id="9h1-MC-UCU"/>
                                     <constraint firstAttribute="width" constant="54" id="apu-z1-8Hl"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
@@ -347,10 +347,10 @@
                             <constraint firstAttribute="trailing" secondItem="5h7-3i-d76" secondAttribute="trailing" constant="10" id="0RC-iw-3oO"/>
                             <constraint firstItem="szl-II-JeR" firstAttribute="leading" secondItem="abO-QA-mAw" secondAttribute="leading" type="default" id="2EA-mb-Gq0"/>
                             <constraint firstItem="d9h-tF-0ZH" firstAttribute="trailing" secondItem="abO-QA-mAw" secondAttribute="trailing" type="default" id="3FF-3G-bei"/>
+                            <constraint firstItem="IPI-pT-ne0" firstAttribute="leading" secondItem="abO-QA-mAw" secondAttribute="leading" constant="6" id="7bz-aw-Z8h"/>
                             <constraint firstItem="mop-ja-7Vx" firstAttribute="centerX" secondItem="rio-aL-zcV" secondAttribute="centerX" type="default" id="81b-6R-V7i"/>
                             <constraint firstItem="JOJ-Ae-Exg" firstAttribute="trailing" secondItem="abO-QA-mAw" secondAttribute="trailing" type="default" id="8Jp-Io-O9U"/>
                             <constraint firstItem="d9h-tF-0ZH" firstAttribute="bottom" secondItem="abO-QA-mAw" secondAttribute="bottom" type="user" id="CPh-nl-j2H"/>
-                            <constraint firstItem="IPI-pT-ne0" firstAttribute="leading" secondItem="abO-QA-mAw" secondAttribute="leading" constant="8" id="N9S-t5-BGB"/>
                             <constraint firstItem="1yW-JE-ZGO" firstAttribute="leading" secondItem="rio-aL-zcV" secondAttribute="leading" type="default" id="Neq-I1-O1l"/>
                             <constraint firstItem="d9h-tF-0ZH" firstAttribute="bottom" secondItem="abO-QA-mAw" secondAttribute="bottom" type="user" id="Q6n-A7-BzG"/>
                             <constraint firstItem="IPI-pT-ne0" firstAttribute="top" secondItem="abO-QA-mAw" secondAttribute="top" constant="9" id="QVy-c9-nQy"/>
@@ -399,6 +399,43 @@
         <image name="rewind.png" width="128" height="128"/>
         <image name="sampleWaveForm.png" width="1800" height="280"/>
     </resources>
+    <classes>
+        <class className="NSLayoutConstraint" superclassName="NSObject">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/NSLayoutConstraint.h"/>
+        </class>
+        <class className="PlaySoundViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/PlaySoundViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="backToSearchResults:"/>
+                <relationship kind="action" name="playPauseSound:"/>
+                <relationship kind="action" name="skipToNextSong:"/>
+                <relationship kind="action" name="skipToPreviousSong:"/>
+                <relationship kind="outlet" name="artworkImageView" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="backButtonOutlet" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="fastForwardButtonOutlet" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="lostInternetConnectionLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="playPauseButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="rewindButtonOutlet" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="soundTimeLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="soundTimeRemainingLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="titleLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="usernameLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="waveformProgressBar" candidateClass="UIView"/>
+                <relationship kind="outlet" name="waveformShapeView" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="waveformView" candidateClass="UIView"/>
+            </relationships>
+        </class>
+        <class className="ViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="goToNowPlaying:"/>
+                <relationship kind="outlet" name="activityIndicator" candidateClass="UIActivityIndicatorView"/>
+                <relationship kind="outlet" name="nowPlayingButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="searchBar" candidateClass="UISearchBar"/>
+                <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
+            </relationships>
+        </class>
+    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
