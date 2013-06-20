@@ -225,7 +225,7 @@
 
 -(NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (![identifier isEqual:@"cell"]) {
+    if (![identifier isEqual:@"cell"] || !internetConnection) {
         return nil;
     }
     else {
