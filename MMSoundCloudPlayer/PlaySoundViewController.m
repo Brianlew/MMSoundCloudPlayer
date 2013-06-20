@@ -159,6 +159,8 @@
             [self loadTrack:nextTrack forIndex:0];
         }
         
+        buttonMashCount = 0;
+        
         [self displayCurrentTrack];
     }
 }
@@ -227,11 +229,13 @@
 {
 
     waveformProgressBar.frame = CGRectMake(waveformProgressBar.frame.origin.x, waveformProgressBar.frame.origin.y, 0, waveformProgressBar.frame.size.height);
-    [musicPlayer pause];
-
+    [musicPlayer pause];        
+    
     titleLabel.text = currentTrack.trackTitle;
     usernameLabel.text = currentTrack.username;
 
+    if (buttonMashCount < buttonMashMax) {
+    
     if (currentTrack.artWork == nil) {
         artworkImageView.image = [UIImage imageNamed:@"bg_empty_player.png"];
         
@@ -261,6 +265,7 @@
     [musicPlayer addObserver:self forKeyPath:@"rate" options:0 context:nil];
     
     [musicPlayer play];
+    }
 }
 
 -(void)loadTrack:(Track*)track forIndex:(NSInteger)index
@@ -297,6 +302,7 @@
     }
     else
     {
+        NSLog(@"ButtonMashCount: %i", buttonMashCount);
         [getArtworkOperationQueue cancelAllOperations];
         [getWaveformOperationQueue cancelAllOperations];
     }
@@ -305,6 +311,7 @@
 -(void)resetButtonMashCount
 {
     if (buttonMashCount > buttonMashMax) {
+        NSLog(@"RESETING ButtonMashCount!!!");
         buttonMashCount = 0;
         [self displayCurrentTrack];
     }
@@ -355,7 +362,9 @@
             currentIndex = playlistArray.count - 1;
         }
         
-        [self displayCurrentTrack];
+      //  if (buttonMashCount < buttonMashMax) {
+            [self displayCurrentTrack];
+       // }
 
     }
     else //restart song from beginning
@@ -386,8 +395,9 @@
         currentIndex = 0;
     }
     
-    [self displayCurrentTrack];
-
+  //  if (buttonMashCount < buttonMashMax) {
+        [self displayCurrentTrack];
+  //  }
 }
 
 - (void)seek {
