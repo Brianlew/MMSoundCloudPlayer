@@ -231,7 +231,7 @@
     usernameLabel.text = currentTrack.username;
 
     if (currentTrack.artWork == nil) {
-        artworkImageView.image = [UIImage imageNamed:@"cloud.png"];
+        artworkImageView.image = [UIImage imageNamed:@"bg_empty_player.png"];
         
         if (buttonMashCount <= buttonMashMax) {
             [currentTrack fetchArtworkForImageView:artworkImageView onOperationQueue:getArtworkOperationQueue withCurrentIndex:currentIndex];
