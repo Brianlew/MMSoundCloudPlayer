@@ -55,6 +55,23 @@
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
                                     </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="gray" indentationWidth="10" reuseIdentifier="noInternet" textLabel="pBJ-S8-AKe" style="IBUITableViewCellStyleDefault" id="FEQ-sY-Djq">
+                                        <rect key="frame" x="0.0" y="110" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Check Your Internet Connection" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="pBJ-S8-AKe">
+                                                    <rect key="frame" x="10" y="0.0" width="300" height="43"/>
+                                                    <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="14"/>
+                                                    <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                </label>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </view>
+                                    </tableViewCell>
                                 </prototypes>
                             </tableView>
                             <searchBar contentMode="redraw" placeholder="Search SoundCloud" translatesAutoresizingMaskIntoConstraints="NO" id="csJ-cu-D0j">
@@ -313,14 +330,24 @@
                                     <action selector="backToSearchResults:" destination="EiK-uS-A3Y" eventType="touchUpInside" id="Mlg-fp-5iI"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Lost Internet Connection" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mop-ja-7Vx">
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="B2e-fF-m0C"/>
+                                    <constraint firstAttribute="width" constant="209" id="y5P-eH-tX5"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="17"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="JOJ-Ae-Exg" firstAttribute="top" secondItem="abO-QA-mAw" secondAttribute="top" constant="95" id="0AG-8o-VBa"/>
                             <constraint firstAttribute="trailing" secondItem="5h7-3i-d76" secondAttribute="trailing" constant="10" id="0RC-iw-3oO"/>
-                            <constraint firstItem="XV0-K0-U6g" firstAttribute="centerX" secondItem="JOJ-Ae-Exg" secondAttribute="centerX" type="default" id="0n0-EW-nqr"/>
                             <constraint firstItem="szl-II-JeR" firstAttribute="leading" secondItem="abO-QA-mAw" secondAttribute="leading" type="default" id="2EA-mb-Gq0"/>
                             <constraint firstItem="d9h-tF-0ZH" firstAttribute="trailing" secondItem="abO-QA-mAw" secondAttribute="trailing" type="default" id="3FF-3G-bei"/>
+                            <constraint firstItem="mop-ja-7Vx" firstAttribute="centerX" secondItem="rio-aL-zcV" secondAttribute="centerX" type="default" id="81b-6R-V7i"/>
                             <constraint firstItem="JOJ-Ae-Exg" firstAttribute="trailing" secondItem="abO-QA-mAw" secondAttribute="trailing" type="default" id="8Jp-Io-O9U"/>
                             <constraint firstItem="d9h-tF-0ZH" firstAttribute="bottom" secondItem="abO-QA-mAw" secondAttribute="bottom" type="user" id="CPh-nl-j2H"/>
                             <constraint firstItem="IPI-pT-ne0" firstAttribute="leading" secondItem="abO-QA-mAw" secondAttribute="leading" constant="8" id="N9S-t5-BGB"/>
@@ -328,10 +355,12 @@
                             <constraint firstItem="d9h-tF-0ZH" firstAttribute="bottom" secondItem="abO-QA-mAw" secondAttribute="bottom" type="user" id="Q6n-A7-BzG"/>
                             <constraint firstItem="IPI-pT-ne0" firstAttribute="top" secondItem="abO-QA-mAw" secondAttribute="top" constant="9" id="QVy-c9-nQy"/>
                             <constraint firstItem="d9h-tF-0ZH" firstAttribute="leading" secondItem="abO-QA-mAw" secondAttribute="leading" type="default" id="TBh-dy-oMJ"/>
+                            <constraint firstItem="mop-ja-7Vx" firstAttribute="centerX" secondItem="JOJ-Ae-Exg" secondAttribute="centerX" type="default" id="VI8-WF-Exu"/>
                             <constraint firstItem="1yW-JE-ZGO" firstAttribute="top" secondItem="abO-QA-mAw" secondAttribute="top" constant="71" id="XkB-um-wrl"/>
                             <constraint firstItem="rio-aL-zcV" firstAttribute="top" secondItem="abO-QA-mAw" secondAttribute="top" constant="53" id="Ywf-Nb-lG4"/>
                             <constraint firstItem="5h7-3i-d76" firstAttribute="top" secondItem="abO-QA-mAw" secondAttribute="top" type="default" id="cwI-FH-yO5"/>
                             <constraint firstItem="JOJ-Ae-Exg" firstAttribute="leading" secondItem="abO-QA-mAw" secondAttribute="leading" type="default" id="d3U-fA-b9v"/>
+                            <constraint firstItem="mop-ja-7Vx" firstAttribute="top" secondItem="abO-QA-mAw" secondAttribute="top" constant="215" id="hAt-gF-2hO"/>
                             <constraint firstItem="szl-II-JeR" firstAttribute="trailing" secondItem="abO-QA-mAw" secondAttribute="trailing" type="default" id="i30-43-3YH"/>
                             <constraint firstItem="XV0-K0-U6g" firstAttribute="top" secondItem="abO-QA-mAw" secondAttribute="top" constant="21" id="il2-Fl-VBd"/>
                             <constraint firstItem="rio-aL-zcV" firstAttribute="centerX" secondItem="XV0-K0-U6g" secondAttribute="centerX" type="default" id="mgS-lf-Mks"/>
@@ -343,6 +372,7 @@
                         <outlet property="artworkImageView" destination="JOJ-Ae-Exg" id="cO7-1j-Vqf"/>
                         <outlet property="backButtonOutlet" destination="IPI-pT-ne0" id="qdS-I9-Ah7"/>
                         <outlet property="fastForwardButtonOutlet" destination="ZNf-oI-k1n" id="DI9-Ln-xLZ"/>
+                        <outlet property="lostInternetConnectionLabel" destination="mop-ja-7Vx" id="5PF-Ue-Edy"/>
                         <outlet property="playPauseButton" destination="cRa-iZ-nhy" id="Lf2-BD-9gp"/>
                         <outlet property="rewindButtonOutlet" destination="mXx-Ck-mMv" id="kxo-ph-4OD"/>
                         <outlet property="soundTimeLabel" destination="Egt-2C-2Sf" id="EFF-Uc-Oy5"/>
@@ -369,42 +399,6 @@
         <image name="rewind.png" width="128" height="128"/>
         <image name="sampleWaveForm.png" width="1800" height="280"/>
     </resources>
-    <classes>
-        <class className="NSLayoutConstraint" superclassName="NSObject">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/NSLayoutConstraint.h"/>
-        </class>
-        <class className="PlaySoundViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/PlaySoundViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="backToSearchResults:"/>
-                <relationship kind="action" name="playPauseSound:"/>
-                <relationship kind="action" name="skipToNextSong:"/>
-                <relationship kind="action" name="skipToPreviousSong:"/>
-                <relationship kind="outlet" name="artworkImageView" candidateClass="UIImageView"/>
-                <relationship kind="outlet" name="backButtonOutlet" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="fastForwardButtonOutlet" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="playPauseButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="rewindButtonOutlet" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="soundTimeLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="soundTimeRemainingLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="titleLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="usernameLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="waveformProgressBar" candidateClass="UIView"/>
-                <relationship kind="outlet" name="waveformShapeView" candidateClass="UIImageView"/>
-                <relationship kind="outlet" name="waveformView" candidateClass="UIView"/>
-            </relationships>
-        </class>
-        <class className="ViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/ViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="goToNowPlaying:"/>
-                <relationship kind="outlet" name="activityIndicator" candidateClass="UIActivityIndicatorView"/>
-                <relationship kind="outlet" name="nowPlayingButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="searchBar" candidateClass="UISearchBar"/>
-                <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
-            </relationships>
-        </class>
-    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

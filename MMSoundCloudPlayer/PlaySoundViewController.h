@@ -26,6 +26,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *soundTimeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *soundTimeRemainingLabel;
+@property (weak, nonatomic) IBOutlet UILabel *lostInternetConnectionLabel;
 
 @property (strong, nonatomic) Track *currentTrack;
 

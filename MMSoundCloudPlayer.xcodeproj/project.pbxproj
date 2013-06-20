@@ -46,6 +46,8 @@
 		D37E7FBF177110C80097FE1B /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = D37E7FBE177110C80097FE1B /* Default.png */; };
 		D37E7FC1177110D30097FE1B /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D37E7FC0177110D30097FE1B /* Default@2x.png */; };
 		D37E7FC41771143B0097FE1B /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D37E7FC2177110F50097FE1B /* Default-568h@2x.png */; };
+		D37E7FC717724F420097FE1B /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = D37E7FC617724F410097FE1B /* Reachability.m */; };
+		D37E7FC9177250650097FE1B /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D37E7FC8177250650097FE1B /* SystemConfiguration.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -97,6 +99,9 @@
 		D37E7FBE177110C80097FE1B /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Default.png; path = ../Default.png; sourceTree = "<group>"; };
 		D37E7FC0177110D30097FE1B /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default@2x.png"; path = "../Default@2x.png"; sourceTree = "<group>"; };
 		D37E7FC2177110F50097FE1B /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "../Default-568h@2x.png"; sourceTree = "<group>"; };
+		D37E7FC517724F3F0097FE1B /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
+		D37E7FC617724F410097FE1B /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
+		D37E7FC8177250650097FE1B /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,6 +109,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D37E7FC9177250650097FE1B /* SystemConfiguration.framework in Frameworks */,
 				D30B2EDF1763B9CB00FC997F /* CoreMedia.framework in Frameworks */,
 				D338BEB51762AF1D00A10543 /* AVFoundation.framework in Frameworks */,
 				D338BE921762AF0100A10543 /* UIKit.framework in Frameworks */,
@@ -169,6 +175,7 @@
 		D338BE901762AF0100A10543 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D37E7FC8177250650097FE1B /* SystemConfiguration.framework */,
 				D30B2EDE1763B9CB00FC997F /* CoreMedia.framework */,
 				D338BEB41762AF1D00A10543 /* AVFoundation.framework */,
 				D338BE911762AF0100A10543 /* UIKit.framework */,
@@ -191,6 +198,8 @@
 				D338BEAD1762AF0100A10543 /* ViewController.m */,
 				D316A82C176795A000C19E80 /* Track.h */,
 				D316A82D176795A000C19E80 /* Track.m */,
+				D37E7FC517724F3F0097FE1B /* Reachability.h */,
+				D37E7FC617724F410097FE1B /* Reachability.m */,
 				D316A82A1767818300C19E80 /* RetainPlaySoundViewControllerProtocol.h */,
 				D338BE981762AF0100A10543 /* Supporting Files */,
 			);
@@ -304,6 +313,7 @@
 				D338BEAE1762AF0100A10543 /* ViewController.m in Sources */,
 				D30B2EDD1763B29E00FC997F /* PlaySoundViewController.m in Sources */,
 				D316A82E176795A000C19E80 /* Track.m in Sources */,
+				D37E7FC717724F420097FE1B /* Reachability.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

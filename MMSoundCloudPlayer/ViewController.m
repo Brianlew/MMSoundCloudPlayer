@@ -11,6 +11,7 @@
 #import "PlaySoundViewController.h"
 #import <AVFoundation/AVFoundation.h>
 #import "Constants.h"
+#import "Reachability.h"
 
 @interface ViewController ()
 {
@@ -28,6 +29,7 @@
     UIImage *nextArtworkImage;
     
     BOOL loading;
+    BOOL internetConnection;
 }
 
 -(void)loadArtworkWithUrl:(NSURL*)artworkUrl atIndexPath:(NSIndexPath*)indexPath;
@@ -59,6 +61,36 @@
     
     defaultImage = [UIImage imageNamed:@"cloud.png"];
     loading = NO;
+    
+    // allocate a reachability object
+    Reachability* reach = [Reachability reachabilityWithHostname:@"www.soundcloud.com"];
+    //[Reachability reachabilityForInternetConnection]
+    
+    // set the blocks
+    reach.reachableBlock = ^(Reachability*reach)
+    {
+        NSLog(@"REACHABLE!");
+        
+        NSBlockOperation *updateInternetConnectionOperation = [NSBlockOperation blockOperationWithBlock:^{
+            internetConnection = YES;
+        }];
+        
+        [[NSOperationQueue mainQueue] addOperation:updateInternetConnectionOperation];
+    };
+    
+    reach.unreachableBlock = ^(Reachability*reach)
+    {
+        NSLog(@"UNREACHABLE!");
+        
+        NSBlockOperation *updateInternetConnectionOperation = [NSBlockOperation blockOperationWithBlock:^{
+            internetConnection = NO;
+        }];
+        
+        [[NSOperationQueue mainQueue] addOperation:updateInternetConnectionOperation];
+    };
+    
+    // start the notifier which will cause the reachability object to retain itself!
+    [reach startNotifier];
 }
 
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
@@ -71,76 +103,83 @@
     playSoundViewController.currentIndex = -1;
     [changedIndexPaths removeAllObjects];
     
-    if (!loading) {
-        
-        loading = YES;
-        [tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
-        collection = [[NSMutableArray alloc] init];
-        [artworkArray removeAllObjects];
-        [tableView reloadData];
-        
-        [activityIndicator startAnimating];
-        [UIView animateWithDuration:.5 animations:^{
-            tableView.frame = CGRectMake(tableView.frame.origin.x, tableView.frame.origin.y+30, tableView.frame.size.width, tableView.frame.size.height-30);
-        }];
-    }
+    if (internetConnection) {
     
-    
-    NSString *searchText = self.searchBar.text;
-    NSString *encodedSearchText = [searchText stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    NSString *urlString = [NSString stringWithFormat:@"https://api.soundcloud.com/search/sounds.json?client_id=%@&q=%@", sClientId, encodedSearchText];
-    NSURL *url = [NSURL URLWithString:urlString];
-    NSURLRequest *request = [NSURLRequest requestWithURL:url];
-    
-    mostRecentSearchUrl = url;
-    
-    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-        
-        if ([response.URL isEqual: mostRecentSearchUrl]) {
-        
-            NSLog(@"ResponseUrl: %@", response.URL);
+        if (!loading) {
             
-            NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-            collection = [[NSMutableArray alloc] initWithArray: [responseDictionary objectForKey:@"collection"]];
-            artworkArray = [[NSMutableArray alloc] initWithCapacity:collection.count];
-            
-            
-            NSMutableIndexSet *indexSet = [[NSMutableIndexSet alloc] init];
-            
-            for (int i = 0; i < collection.count; i++) {
-                if (collection[i][@"streamable"] == [[NSNumber alloc] initWithBool:NO]) {
-                    [indexSet addIndex:i];
-                }
-                else {
-                    [artworkArray addObject:defaultImage];
-                }
-            }
-            
-            [collection removeObjectsAtIndexes:indexSet];
-            
-            if (collection.count == 0) {
-                identifier = @"noResults";
-            }
-            else {
-                identifier = @"cell";
-            }
-
-            [activityIndicator stopAnimating];
-
+            loading = YES;
+            [tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
+            collection = [[NSMutableArray alloc] init];
+            [artworkArray removeAllObjects];
             [tableView reloadData];
             
+            [activityIndicator startAnimating];
             [UIView animateWithDuration:.5 animations:^{
-                tableView.frame = CGRectMake(tableView.frame.origin.x, tableView.frame.origin.y-30, tableView.frame.size.width, tableView.frame.size.height+30);
+                tableView.frame = CGRectMake(tableView.frame.origin.x, tableView.frame.origin.y+30, tableView.frame.size.width, tableView.frame.size.height-30);
             }];
-            
-            loading = NO;
         }
-    } ];
+        
+        
+        NSString *searchText = self.searchBar.text;
+        NSString *encodedSearchText = [searchText stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        NSString *urlString = [NSString stringWithFormat:@"https://api.soundcloud.com/search/sounds.json?client_id=%@&q=%@", sClientId, encodedSearchText];
+        NSURL *url = [NSURL URLWithString:urlString];
+        NSURLRequest *request = [NSURLRequest requestWithURL:url];
+        
+        mostRecentSearchUrl = url;
+        
+        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+            
+            if ([response.URL isEqual: mostRecentSearchUrl]) {
+                
+                NSLog(@"ResponseUrl: %@", response.URL);
+                
+                NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+                collection = [[NSMutableArray alloc] initWithArray: [responseDictionary objectForKey:@"collection"]];
+                artworkArray = [[NSMutableArray alloc] initWithCapacity:collection.count];
+                
+                
+                NSMutableIndexSet *indexSet = [[NSMutableIndexSet alloc] init];
+                
+                for (int i = 0; i < collection.count; i++) {
+                    if (collection[i][@"streamable"] == [[NSNumber alloc] initWithBool:NO]) {
+                        [indexSet addIndex:i];
+                    }
+                    else {
+                        [artworkArray addObject:defaultImage];
+                    }
+                }
+                
+                [collection removeObjectsAtIndexes:indexSet];
+                
+                if (collection.count == 0) {
+                    identifier = @"noResults";
+                }
+                else {
+                    identifier = @"cell";
+                }
+                
+                [activityIndicator stopAnimating];
+                
+                [tableView reloadData];
+                
+                [UIView animateWithDuration:.5 animations:^{
+                    tableView.frame = CGRectMake(tableView.frame.origin.x, tableView.frame.origin.y-30, tableView.frame.size.width, tableView.frame.size.height+30);
+                }];
+                
+                loading = NO;
+            }
+        } ];
+    }
+    else {
+        identifier = @"noInternet";
+        [tableView reloadData];
+    }
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if ([identifier isEqualToString:@"noResults"]) {
+    if ([identifier isEqualToString:@"noResults"] || [identifier isEqualToString:@"noInternet"]) {
         return 1;
     }
     
@@ -156,7 +195,7 @@
 {
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
     
-    if ([identifier isEqualToString:@"noResults"]) {
+    if ([identifier isEqualToString:@"noResults"] || [identifier isEqualToString:@"noInternet"]) {
         return cell;
     }
     
@@ -186,7 +225,7 @@
 
 -(NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ([identifier isEqual:@"noResults"]) {
+    if (![identifier isEqual:@"cell"]) {
         return nil;
     }
     else {

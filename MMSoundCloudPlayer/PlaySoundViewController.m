@@ -12,6 +12,7 @@
 #import "ViewController.h"
 #import "Constants.h"
 #import "Track.h"
+#import "Reachability.h"
 
 @interface PlaySoundViewController ()
 {
@@ -34,6 +35,8 @@
     NSString *resize;
     NSInteger soundSeconds;
     NSInteger soundRemainingSeconds;
+    
+    BOOL internetConnection;
 }
 
 -(void)updateSoundProgressBar;
@@ -45,7 +48,7 @@
 
 @implementation PlaySoundViewController
 
-@synthesize musicPlayer, currentIndex, playlistArray, artworkImageView, waveformProgressBar, waveformView, waveformShapeView, newSoundSelected, currentTrack, playPauseButton, usernameLabel, backButtonOutlet, rewindButtonOutlet, fastForwardButtonOutlet, soundTimeLabel, soundTimeRemainingLabel, titleLabel;
+@synthesize musicPlayer, currentIndex, playlistArray, artworkImageView, waveformProgressBar, waveformView, waveformShapeView, newSoundSelected, currentTrack, playPauseButton, usernameLabel, backButtonOutlet, rewindButtonOutlet, fastForwardButtonOutlet, soundTimeLabel, soundTimeRemainingLabel, titleLabel, lostInternetConnectionLabel;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -72,7 +75,7 @@
     getWaveformOperationQueue = [[NSOperationQueue alloc] init];
 
     self.delegate = (ViewController*)self.presentingViewController;
-
+    
     timerInterval = .1;
     resize = @"-crop";
     
@@ -87,8 +90,46 @@
     [rewindButtonOutlet setBackgroundImage:[UIImage imageNamed:@"rewindSelected"] forState:UIControlStateHighlighted];
     [fastForwardButtonOutlet setBackgroundImage:[UIImage imageNamed:@"fastForwardSelected"] forState:UIControlStateHighlighted];
 
-    
     [playPauseButton setBackgroundImage:playButtonImage forState:UIControlStateNormal];
+    
+    Reachability* reach = [Reachability reachabilityWithHostname:@"www.soundcloud.com"];
+    //[Reachability reachabilityForInternetConnection]
+    
+    // set the blocks
+    reach.reachableBlock = ^(Reachability*reach)
+    {
+        NSLog(@"REACHABLE!");
+        
+        NSBlockOperation *updateInternetConnectionOperation = [NSBlockOperation blockOperationWithBlock:^{
+            internetConnection = YES;
+            playPauseButton.userInteractionEnabled = YES;
+            fastForwardButtonOutlet.userInteractionEnabled = YES;
+            rewindButtonOutlet.userInteractionEnabled = YES;
+            lostInternetConnectionLabel.hidden = YES;
+        }];
+        
+        [[NSOperationQueue mainQueue] addOperation:updateInternetConnectionOperation];
+    };
+    
+    reach.unreachableBlock = ^(Reachability*reach)
+    {
+        NSLog(@"UNREACHABLE!");
+        
+        NSBlockOperation *updateInternetConnectionOperation = [NSBlockOperation blockOperationWithBlock:^{
+            internetConnection = NO;
+            [musicPlayer pause];
+            playPauseButton.userInteractionEnabled = NO;
+            fastForwardButtonOutlet.userInteractionEnabled = NO;
+            rewindButtonOutlet.userInteractionEnabled = NO;
+            lostInternetConnectionLabel.hidden = NO;
+        }];
+        
+        [[NSOperationQueue mainQueue] addOperation:updateInternetConnectionOperation];
+    };
+    
+    // start the notifier which will cause the reachability object to retain itself!
+    [reach startNotifier];
+
 }
 
 -(void)viewDidAppear:(BOOL)animated
