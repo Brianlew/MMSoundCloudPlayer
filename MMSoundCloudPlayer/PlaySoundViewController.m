@@ -223,49 +223,59 @@
             NSLog(@"Paused");
         }
     }
+    if ([keyPath isEqualToString:@"status"]) {
+        if (musicPlayer.currentItem.status == AVPlayerItemStatusReadyToPlay) {
+            [musicPlayer play];
+        }
+        else if (musicPlayer.currentItem.status == AVPlayerItemStatusFailed) {
+            [self skipToNextSong:self];
+        }
+    }
 }
 
 -(void)displayCurrentTrack
 {
-
+    
     waveformProgressBar.frame = CGRectMake(waveformProgressBar.frame.origin.x, waveformProgressBar.frame.origin.y, 0, waveformProgressBar.frame.size.height);
-    [musicPlayer pause];        
+    [musicPlayer pause];
     
     titleLabel.text = currentTrack.trackTitle;
     usernameLabel.text = currentTrack.username;
     artworkImageView.image = [UIImage imageNamed:@"bg_empty_player.png"];
-
+    
     if (buttonMashCount < buttonMashMax) {
-    
-    if (currentTrack.artWork == nil) {
-        artworkImageView.image = [UIImage imageNamed:@"bg_empty_player.png"];
         
-        if (buttonMashCount <= buttonMashMax) {
-            [currentTrack fetchArtworkForImageView:artworkImageView onOperationQueue:getArtworkOperationQueue withCurrentIndex:currentIndex];
+        if (currentTrack.artWork == nil) {
+            artworkImageView.image = [UIImage imageNamed:@"bg_empty_player.png"];
+            
+            if (buttonMashCount <= buttonMashMax) {
+                [currentTrack fetchArtworkForImageView:artworkImageView onOperationQueue:getArtworkOperationQueue withCurrentIndex:currentIndex];
+            }
         }
-    }
-    else
-    {
-        artworkImageView.image = currentTrack.artWork;
-    }
-    
-    if (currentTrack.waveformImage == nil) {
-        waveformShapeView.image = [UIImage imageNamed:@"sampleWaveForm.png"];
+        else
+        {
+            artworkImageView.image = currentTrack.artWork;
+        }
         
-        if (buttonMashCount <= buttonMashMax) {
-            [currentTrack fetchWaveformImageForImageView:waveformShapeView onOperationQueue:getWaveformOperationQueue withCurrentIndex:currentIndex];
+        if (currentTrack.waveformImage == nil) {
+            waveformShapeView.image = [UIImage imageNamed:@"sampleWaveForm.png"];
+            
+            if (buttonMashCount <= buttonMashMax) {
+                [currentTrack fetchWaveformImageForImageView:waveformShapeView onOperationQueue:getWaveformOperationQueue withCurrentIndex:currentIndex];
+            }
         }
-    }
-    else
-    {
-        waveformShapeView.image = currentTrack.waveformImage;
-    }
-    
-    [musicPlayer removeObserver:self forKeyPath:@"rate"];
-    musicPlayer = [AVPlayer playerWithURL:currentTrack.streamUrl];
-    [musicPlayer addObserver:self forKeyPath:@"rate" options:0 context:nil];
-    
-    [musicPlayer play];
+        else
+        {
+            waveformShapeView.image = currentTrack.waveformImage;
+        }
+        
+        [musicPlayer removeObserver:self forKeyPath:@"rate"];
+        [musicPlayer.currentItem removeObserver:self forKeyPath:@"status"];
+        musicPlayer = [AVPlayer playerWithURL:currentTrack.streamUrl];
+        [musicPlayer addObserver:self forKeyPath:@"rate" options:0 context:nil];
+        [musicPlayer.currentItem addObserver:self forKeyPath:@"status" options:0 context:nil];
+        
+//        [musicPlayer play];
     }
 }
 
