@@ -93,7 +93,6 @@
     [playPauseButton setBackgroundImage:playButtonImage forState:UIControlStateNormal];
     
     Reachability* reach = [Reachability reachabilityWithHostname:@"www.soundcloud.com"];
-    //[Reachability reachabilityForInternetConnection]
     
     // set the blocks
     reach.reachableBlock = ^(Reachability*reach)
@@ -223,7 +222,8 @@
             NSLog(@"Paused");
         }
     }
-    if ([keyPath isEqualToString:@"status"]) {
+    
+    else if ([keyPath isEqualToString:@"status"]) {
         if (musicPlayer.currentItem.status == AVPlayerItemStatusReadyToPlay) {
             [musicPlayer play];
         }
@@ -274,8 +274,9 @@
         musicPlayer = [AVPlayer playerWithURL:currentTrack.streamUrl];
         [musicPlayer addObserver:self forKeyPath:@"rate" options:0 context:nil];
         [musicPlayer.currentItem addObserver:self forKeyPath:@"status" options:0 context:nil];
+        [self updateSoundProgressBar];
         
-//        [musicPlayer play];
+//        [musicPlayer play]; //this has been moved to musicPlayer.currentItem observor
     }
 }
 
@@ -353,7 +354,7 @@
 }
 
 - (IBAction)skipToPreviousSong:(id)sender
-{    
+{
     if (CMTimeGetSeconds(musicPlayer.currentTime) < 2) { //go to previous song
         currentIndex--;
         nextTrack = [Track createTrackFromTrack:currentTrack];
@@ -386,8 +387,8 @@
     
 }
 
-- (IBAction)skipToNextSong:(id)sender {
-  
+- (IBAction)skipToNextSong:(id)sender
+{  
     currentIndex++;
     previousTrack = [Track createTrackFromTrack:currentTrack];
     currentTrack = [Track createTrackFromTrack:nextTrack];
